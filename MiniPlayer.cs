@@ -12,6 +12,9 @@ namespace MiniGamesAPI
     public class MiniPlayer
     {
         public TSPlayer Player { get; set; }
+        public int Kills { get; set; }
+        public int Deaths { get; set; }
+        public int Assistances { get; set; }
         
         public MiniPlayer(TSPlayer player) 
         {
@@ -72,6 +75,24 @@ namespace MiniGamesAPI
             item.netID = 0;
             TSPlayer.All.SendData(PacketTypes.PlayerSlot, item.Name, Player.Index, slot, item.prefix);
         }
-        
+        public virtual bool CheckContainItem(int netid) 
+        {
+            return Player.TPlayer.HasItem(netid);
+        }
+        public float KDA() {
+            float kd = Kills / Deaths;
+            float kda = kd / Assistances;
+            return kda;
+        }
+        public Vector2 ToAnotherPlayer(MiniPlayer player) {
+            Vector2 velocity = player.Player.TPlayer.position - this.Player.TPlayer.position;
+            return velocity;  
+        }
+        public bool ClearRecord() {
+            Kills = 0;
+            Deaths = 0;
+            Assistances = 0;
+            return true;
+        }
     }
 }

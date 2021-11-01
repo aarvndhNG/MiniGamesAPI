@@ -15,5 +15,6 @@ namespace MiniGamesAPI
             ID = id;
             Name = name;
         }
+        public MiniRoom() { }
     }
 }

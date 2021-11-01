@@ -3,4 +3,4 @@ D:\Projects\MiniGamesAPI\MiniGamesAPI\bin\Release\MiniGamesAPI.pdb
 D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.csproj.CoreCompileInputs.cache
 D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.dll
 D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.pdb
-D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.csprojAssemblyReference.cache
+D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.csproj.AssemblyReference.cache

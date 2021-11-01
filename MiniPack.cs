@@ -44,7 +44,7 @@ namespace MiniGamesAPI
             ID = id;
             DataName = dataName;
             Data = TShock.CharacterDB.GetPlayerData(new TSPlayer(TShock.UserAccounts.GetUserAccountByName(DataName).ID), TShock.UserAccounts.GetUserAccountByName(DataName).ID);
-            //Data = new PlayerData() { };
+           
             if (Data.inventory.Length != 0)
             {
                 for (int i = 0; i < Data.inventory.Length; i++)
@@ -56,7 +56,7 @@ namespace MiniGamesAPI
                     }
                 }
             }
-        }
+        } 
         public void RestoreCharacter(TSPlayer player)
         {
             if (Items.Count != 0)
