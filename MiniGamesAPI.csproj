@@ -65,6 +65,7 @@
     <Compile Include="IPlayer.cs" />
     <Compile Include="IRoom.cs" />
     <Compile Include="MainPlugin.cs" />
+    <Compile Include="MiniItem.cs" />
     <Compile Include="MiniPack.cs" />
     <Compile Include="MiniPlayer.cs" />
     <Compile Include="MiniRoom.cs" />
