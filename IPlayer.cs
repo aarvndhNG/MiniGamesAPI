@@ -12,8 +12,9 @@ namespace MiniGamesAPI
         int ID { get;  }
         string Name { get;  }
         bool IsReady { get; set; }
+        int CurrentRoomID { get; set; }
         PlayerStatus Status { get; set; }
         void Ready();
-        void SendBoardMsg(string info);
+      
     }
 }

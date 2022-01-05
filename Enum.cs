@@ -8,7 +8,7 @@ namespace MiniGamesAPI
 {
     public static class Enum
     {
-        public enum RoomStatus {
+        public enum RoomStatus{
         Waiting,
         Gaming,
         Concluding,

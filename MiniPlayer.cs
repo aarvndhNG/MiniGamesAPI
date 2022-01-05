@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace MiniGamesAPI
 {
     public class MiniPlayer
     {
+        [JsonIgnore]
         public TSPlayer Player { get; set; }
         public int Kills { get; set; }
         public int Deaths { get; set; }
@@ -20,6 +22,7 @@ namespace MiniGamesAPI
         {
             Player = player;
         }
+        public MiniPlayer() {}
         public override string ToString()
         {
             return Player.Name;
@@ -45,6 +48,10 @@ namespace MiniGamesAPI
         {
             Player.SendMessage(msg,Color.Crimson);
         }
+        public virtual void SendMessage(string msg,Color color)
+        {
+            Player.SendMessage(msg, color);
+        }
         public virtual void SetBuff(int type,int time=3600,bool bypass=false) 
         {
             Player.SetBuff(type,time,bypass);
@@ -57,6 +64,7 @@ namespace MiniGamesAPI
         }
         public virtual void SetTeam(int id)
         {
+            if (Player == null) return;
             Player.SetTeam(id);
         }
         public virtual void RestorePlayerInv(MiniPack pack) {
@@ -93,6 +101,9 @@ namespace MiniGamesAPI
             Deaths = 0;
             Assistances = 0;
             return true;
+        }
+        public void SendBoardMsg(string info) {
+            Player.SendData(PacketTypes.Status,info);
         }
     }
 }

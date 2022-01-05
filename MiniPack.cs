@@ -112,60 +112,66 @@ namespace MiniGamesAPI
             //此循环用来清空玩家背包
             for (int j = 0; j < NetItem.MaxInventory; j++)
             {
-                if (j < NetItem.InventoryIndex.Item2)
+                if (j < 59)
                 {
                     //0-58
                     player.TPlayer.inventory[j].netDefaults(0);
                 }
-                else if (j < NetItem.ArmorIndex.Item2)
+                else if (j < 79)
                 {
                     //59-78
                     var index = j - NetItem.ArmorIndex.Item1;
                     player.TPlayer.armor[index].netDefaults(0);
                 }
-                else if (j < NetItem.DyeIndex.Item2)
+                else if (j < 89)
                 {
                     //79-88
                     var index = j - NetItem.DyeIndex.Item1;
                     player.TPlayer.dye[index].netDefaults(0);
                 }
-                else if (j < NetItem.MiscEquipIndex.Item2)
+                else if (j < 94)
                 {
                     //89-93
                     var index = j - NetItem.MiscEquipIndex.Item1;
                     player.TPlayer.miscEquips[index].netDefaults(0);
                 }
-                else if (j < NetItem.MiscDyeIndex.Item2)
+                else if (j < 99)
                 {
-                    //93-98
+                    //94-98
                     var index = j - NetItem.MiscDyeIndex.Item1;
                     player.TPlayer.miscDyes[index].netDefaults(0);
                 }
-                else if (j < NetItem.PiggyIndex.Item2)
+                else if (j < 139)
                 {
-                    //98-138
+                    //99-138
                     var index = j - NetItem.PiggyIndex.Item1;
                     player.TPlayer.bank.item[index].netDefaults(0);
                 }
-                else if (j < NetItem.SafeIndex.Item2)
+                else if (j < 179)
                 {
-                    //138-178
+                    //139-178
                     var index = j - NetItem.SafeIndex.Item1;
                     player.TPlayer.bank2.item[index].netDefaults(0);
                 }
-                else if (j < NetItem.TrashIndex.Item2)
+                else if (j < 220)
                 {
                     //179-219
-                    var index = j - NetItem.TrashIndex.Item1;
-                    player.TPlayer.trashItem.netDefaults(0);
+                    if (j==179)
+                    {
+                        player.TPlayer.trashItem.netDefaults(0);
+                        continue;
+                    }
+                    var index = j - NetItem.ForgeIndex.Item1;
+                    player.TPlayer.bank3.item[index].netDefaults(0);
+                   
                 }
                 else
                 {
                     //220
-                    var index = j - NetItem.ForgeIndex.Item1;
-                    player.TPlayer.bank3.item[index].netDefaults(0);
+                    var index = j - NetItem.VoidIndex.Item1;
+                    player.TPlayer.bank4.item[index].netDefaults(0);
                 }
-
+            }
 
                 //此循环用来加载玩家背包
                 for (int i = 0; i < Items.Count; i++)
@@ -339,7 +345,6 @@ namespace MiniGamesAPI
                 NetMessage.SendData(76, -1, -1, NetworkText.Empty, player.Index);
 
                 NetMessage.SendData(39, player.Index, -1, NetworkText.Empty, 400);
-            }
 
         }
         public void CopyFromPlayer(TSPlayer plr)
@@ -351,7 +356,6 @@ namespace MiniGamesAPI
         public void CopyFromPlayer(Terraria.Player plr)
         {
             if (plr == null) return;
-            this.Name = plr.name;
             this.MaxHP = plr.statLifeMax;
             this.HP = plr.statLife;
             this.Mana = plr.statMana;
@@ -378,54 +382,90 @@ namespace MiniGamesAPI
             for (int i = 0; i < 59; i++)
             {
                 var tritem = plr.inventory[i];
+                if (tritem.netID==0)
+                {
+                    continue;
+                }
                 MiniItem item = new MiniItem(i,tritem.prefix,tritem.netID,tritem.stack);
                 Items.Add(item);
             }
             for (int i = 0; i < NetItem.ArmorSlots; i++)
             {
                 var tritem = plr.armor[i];
+                if (tritem.netID == 0)
+                {
+                    continue;
+                }
                 MiniItem item = new MiniItem(i+59, tritem.prefix, tritem.netID, tritem.stack);
                 Items.Add(item);
             }
             for (int i = 0; i < NetItem.DyeSlots; i++)
             {
-                var tritem = plr.inventory[i];
+                var tritem = plr.dye[i];
+                if (tritem.netID == 0)
+                {
+                    continue;
+                }
                 MiniItem item = new MiniItem(i+79, tritem.prefix, tritem.netID, tritem.stack);
                 Items.Add(item);
             }
             for (int i = 0; i < NetItem.MiscEquipSlots; i++)
             {
-                var tritem = plr.inventory[i];
+                var tritem = plr.miscEquips[i];
+                if (tritem.netID == 0)
+                {
+                    continue;
+                }
                 MiniItem item = new MiniItem(i + 89, tritem.prefix, tritem.netID, tritem.stack);
                 Items.Add(item);
             }
             for (int i = 0; i < NetItem.MiscDyeSlots; i++)
             {
-                var tritem = plr.inventory[i];
+                var tritem = plr.miscDyes[i];
+                if (tritem.netID == 0)
+                {
+                    continue;
+                }
                 MiniItem item = new MiniItem(i + 94, tritem.prefix, tritem.netID, tritem.stack);
                 Items.Add(item);
             }
             for (int i = 0; i < NetItem.PiggySlots; i++)
             {
-                var tritem = plr.inventory[i];
+                var tritem = plr.bank.item[i];
+                if (tritem.netID == 0)
+                {
+                    continue;
+                }
                 MiniItem item = new MiniItem(i + 99, tritem.prefix, tritem.netID, tritem.stack);
                 Items.Add(item);
             }
             for (int i = 0; i < NetItem.SafeSlots; i++)
             {
-                var tritem = plr.inventory[i];
+                var tritem = plr.bank2.item[i];
+                if (tritem.netID == 0)
+                {
+                    continue;
+                }
                 MiniItem item = new MiniItem(i + 139, tritem.prefix, tritem.netID, tritem.stack);
                 Items.Add(item);
             }
             for (int i = 0; i < NetItem.ForgeSlots; i++)
             {
-                var tritem = plr.inventory[i];
+                var tritem = plr.bank3.item[i];
+                if (tritem.netID == 0)
+                {
+                    continue;
+                }
                 MiniItem item = new MiniItem(i + 180, tritem.prefix, tritem.netID, tritem.stack);
                 Items.Add(item);
             }
             for (int i = 0; i < NetItem.VoidSlots; i++)
             {
-                var tritem = plr.inventory[i];
+                var tritem = plr.bank4.item[i];
+                if (tritem.netID == 0)
+                {
+                    continue;
+                }
                 MiniItem item = new MiniItem(i + 220, tritem.prefix, tritem.netID, tritem.stack);
                 Items.Add(item);
             }
