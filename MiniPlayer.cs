@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using TShockAPI;
+using static MiniGamesAPI.Enum;
 
 namespace MiniGamesAPI
 {
@@ -17,15 +18,47 @@ namespace MiniGamesAPI
         public int Kills { get; set; }
         public int Deaths { get; set; }
         public int Assistances { get; set; }
-        
-        public MiniPlayer(TSPlayer player) 
+        public int ID { get; set; }
+        public string Name { get { return Player.Name; } }
+        public bool IsReady { get; set; }
+        public int CurrentRoomID { get; set; }
+        public int SelectPackID { get; set; }
+        public MiniPack BackUp { get; set; }
+        public PlayerStatus Status { get; set; }
+        public Vector2 Position { get { return Player.TPlayer.position; } }
+        public void Ready() 
+        {
+            IsReady = !IsReady;
+        }
+        public MiniPlayer(int id,TSPlayer player) 
         {
             Player = player;
+            BackUp = null;
+            IsReady = false;
+            Status = PlayerStatus.Wating;
+            Kills = 0;
+            Deaths = 0;
+            Assistances = 0;
+            CurrentRoomID = 0;
+            SelectPackID = 0;
         }
-        public MiniPlayer() {}
+        public MiniPlayer() 
+        {
+            if (TSPlayer.FindByNameOrID(Name).Count != 0)
+                Player = TSPlayer.FindByNameOrID(Name)[0];
+            else Player = null;
+        }
         public override string ToString()
         {
-            return Player.Name;
+            StringBuilder playerInfo = new StringBuilder();
+            playerInfo.AppendLine($"玩家名：{Name}");
+            playerInfo.AppendLine($"击杀数：{Kills}");
+            playerInfo.AppendLine($"死亡数：{Deaths}");
+            playerInfo.AppendLine($"助攻数：{Assistances}");
+            playerInfo.AppendLine($"准备状态：{IsReady}");
+            playerInfo.AppendLine($"房间号：{CurrentRoomID}");
+            playerInfo.AppendLine($"当前状态：{Status}");
+            return playerInfo.ToString();
         }
         public virtual void Teleport(Point point) 
         {
@@ -88,13 +121,17 @@ namespace MiniGamesAPI
             return Player.TPlayer.HasItem(netid);
         }
         public float KDA() {
-            float kd = Kills / Deaths;
-            float kda = kd / Assistances;
+            float kills =(float) Kills;
+            float deaths = (float)Deaths;
+            float assists = (float)Assistances;
+            if (kills == 0) kills = 1;
+            if (deaths == 0) deaths = 1;
+            if (assists == 0) assists = 1;
+            float kda = (kills + assists) / deaths;
             return kda;
         }
         public Vector2 ToAnotherPlayer(MiniPlayer player) {
-            Vector2 velocity = player.Player.TPlayer.position - this.Player.TPlayer.position;
-            return velocity;  
+            return player.Position-this.Position;  
         }
         public bool ClearRecord() {
             Kills = 0;
