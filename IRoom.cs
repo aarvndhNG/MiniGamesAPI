@@ -10,7 +10,7 @@ namespace MiniGamesAPI
 {
     public interface IRoom
     {
-        RoomStatus Status { get; set; }
+        
         int GetPlayerCount();
         void Initialize();
         void Dispose();
