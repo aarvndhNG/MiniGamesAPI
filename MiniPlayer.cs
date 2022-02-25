@@ -35,7 +35,7 @@ namespace MiniGamesAPI
             Player = player;
             BackUp = null;
             IsReady = false;
-            Status = PlayerStatus.Wating;
+            Status = PlayerStatus.Waiting;
             Kills = 0;
             Deaths = 0;
             Assistances = 0;
@@ -44,9 +44,7 @@ namespace MiniGamesAPI
         }
         public MiniPlayer() 
         {
-            if (TSPlayer.FindByNameOrID(Name).Count != 0)
-                Player = TSPlayer.FindByNameOrID(Name)[0];
-            else Player = null;
+            
         }
         public override string ToString()
         {

@@ -16,7 +16,7 @@ namespace MiniGamesAPI
         Stoped
         }
         public enum PlayerStatus { 
-        Wating,
+        Waiting,
         Selecting,
         Gaming    
         }
