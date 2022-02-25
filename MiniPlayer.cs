@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.GameContent.Creative;
 using TShockAPI;
 using static MiniGamesAPI.Enum;
 
@@ -65,6 +66,12 @@ namespace MiniGamesAPI
             x = Math.Min(x, Terraria.Main.maxTilesX - 1);
             y = Math.Min(y, Terraria.Main.maxTilesY - 1);
             Player.Teleport(x*16,y*16-48);
+        }
+        public virtual void Teleport(int x,int y)
+        {
+            x = Math.Min(x, Terraria.Main.maxTilesX - 1);
+            y = Math.Min(y, Terraria.Main.maxTilesY - 1);
+            Player.Teleport(x * 16, y * 16 - 48);
         }
         public virtual void SendInfoMessage(string msg) 
         {
@@ -139,6 +146,12 @@ namespace MiniGamesAPI
         }
         public void SendBoardMsg(string info) {
             Player.SendData(PacketTypes.Status,info);
+        }
+        public void Godmode(bool state) 
+        {
+            Player.GodMode = state;
+            var power = CreativePowerManager.Instance.GetPower<CreativePowers.GodmodePower>();
+            power.SetEnabledState(Player.Index,Player.GodMode);
         }
     }
 }
