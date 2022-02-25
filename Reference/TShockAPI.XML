@@ -348,6 +348,9 @@
         <member name="F:TShockAPI.Configuration.TShockSettings.MediumcoreOnly">
             <summary>Prevents softcore players from connecting.</summary>
         </member>
+        <member name="F:TShockAPI.Configuration.TShockSettings.SoftcoreOnly">
+            <summary>Prevents non-softcore players from connecting.</summary>
+        </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.DisableBuild">
             <summary>Disables any placing, or removal of blocks.</summary>
         </member>
@@ -365,6 +368,11 @@
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.DisableTombstones">
             <summary>Disables tombstone dropping during death for all players.</summary>
+        </member>
+        <member name="F:TShockAPI.Configuration.TShockSettings.DisablePrimeBombs">
+            <summary>
+            Disables Skeletron Prime Bombs from spawning, useful for preventing unwanted world destruction on for the worthy seed world.
+            </summary>
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.ForceTime">
             <summary>Forces the world time to be normal, day, or night.</summary>
@@ -430,10 +438,10 @@
             <summary>Allows groups on the banned item allowed list to spawn banned items even if PreventBannedItemSpawn is set to true.</summary>
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.RespawnSeconds">
-            <summary>The number of seconds a player must wait before being respawned. Cannot be longer than normal value now. Use at your own risk.</summary>
+            <summary>The number of seconds a player must wait before being respawned. Valid range: 0 (default) to 15 seconds. Use at your own risk.</summary>
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.RespawnBossSeconds">
-            <summary>The number of seconds a player must wait before being respawned if there is a boss nearby. Cannot be longer than normal value now. Use at your own risk.</summary>
+            <summary>The number of seconds a player must wait before being respawned if there is a boss nearby. Valid range: 0 (default) to 30 seconds. Use at your own risk.</summary>
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.AnonymousBossInvasions">
             <summary>Whether or not to announce boss spawning or invasion starts.</summary>
@@ -470,6 +478,9 @@
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.MediumcoreBanReason">
             <summary>The reason given if banning a mediumcore player on death.</summary>
+        </member>
+        <member name="F:TShockAPI.Configuration.TShockSettings.DisableDefaultIPBan">
+            <summary>Disbales IP bans by default, if no arguments are passed to the ban command.</summary>
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.EnableWhitelist">
             <summary>Enable or disable the whitelist based on IP addresses in the whitelist.txt file.</summary>
@@ -509,10 +520,6 @@
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.MinimumPasswordLength">
             <summary>The minimum password length for new user accounts. Can never be lower than 4.</summary>
-        </member>
-        <member name="F:TShockAPI.Configuration.TShockSettings.HashAlgorithm">
-            <summary>The hash algorithm used to encrypt user passwords.
-            Valid types: "sha512", "sha256" and "md5". Append with "-xp" for the xp supported algorithms.</summary>
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.BCryptWorkFactor">
             <summary>Determines the BCrypt work factor to use. If increased, all passwords will be upgraded to new work-factor on verify.
@@ -580,6 +587,12 @@
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.SuppressPermissionFailureNotices">
             <summary>Whether or not the server should suppress build permission failure warnings from regions, spawn point, or server edit failure.</summary>
+        </member>
+        <member name="F:TShockAPI.Configuration.TShockSettings.DisableModifiedZenith">
+            <summary>Prohibit the use of Zenith projectile with different objects instead of weapons.</summary>
+        </member>
+        <member name="F:TShockAPI.Configuration.TShockSettings.DisableCustomDeathMessages">
+            <summary>Allows you to disable or enable protection against creating custom messages with death. Created for developers who came up with a more original solution to this problem.</summary>
         </member>
         <member name="F:TShockAPI.Configuration.TShockSettings.CommandSpecifier">
             <summary>Specifies which string starts a command.
@@ -766,7 +779,7 @@
         </member>
         <member name="M:TShockAPI.DB.RegionManager.DeleteRegion(System.Int32)">
             <summary>
-            Delets the region from this world with a given ID.
+            Deletes the region from this world with a given ID.
             </summary>
             <param name="id">The ID of the region to delete.</param>
             <returns>Whether the region was successfully deleted.</returns>
@@ -913,7 +926,7 @@
             </summary>
             <param name="regionName">Region name</param>
             <param name="newOwner">New owner's username</param>
-            <returns>Whether the change was successfull</returns>
+            <returns>Whether the change was successful</returns>
         </member>
         <member name="M:TShockAPI.DB.RegionManager.AllowGroup(System.String,System.String)">
             <summary>
@@ -921,7 +934,7 @@
             </summary>
             <param name="regionName">Region name</param>
             <param name="groupName">Group's name</param>
-            <returns>Whether the change was successfull</returns>
+            <returns>Whether the change was successful</returns>
         </member>
         <member name="M:TShockAPI.DB.RegionManager.RemoveGroup(System.String,System.String)">
             <summary>
@@ -929,7 +942,7 @@
             </summary>
             <param name="regionName">Region name</param>
             <param name="group">Group name</param>
-            <returns>Whether the change was successfull</returns>
+            <returns>Whether the change was successful</returns>
         </member>
         <member name="M:TShockAPI.DB.RegionManager.GetTopRegion(System.Collections.Generic.IEnumerable{TShockAPI.DB.Region})">
             <summary>
@@ -944,7 +957,7 @@
             </summary>
             <param name="name">Region name</param>
             <param name="z">New Z index</param>
-            <returns>Whether the change was successfull</returns>
+            <returns>Whether the change was successful</returns>
         </member>
         <member name="M:TShockAPI.DB.Region.InArea(Microsoft.Xna.Framework.Rectangle)">
             <summary>
@@ -1717,6 +1730,16 @@
             </summary>
             <param name="db">The connection.</param>
         </member>
+        <member name="M:TShockAPI.DB.GroupManager.AssertGroupValid(TShockAPI.TSPlayer,TShockAPI.Group,System.Boolean)">
+            <summary>
+            Asserts that the group reference can be safely assigned to the player object.
+            <para>If this assertion fails, and <paramref name="kick"/> is true, the player is disconnected. If <paramref name="kick"/> is false, the player will receive an error message.</para>
+            </summary>
+            <param name="player">The player in question</param>
+            <param name="group">The group we want to assign them</param>
+            <param name="kick">Whether or not failing this check disconnects the player.</param>
+            <returns></returns>
+        </member>
         <member name="M:TShockAPI.DB.GroupManager.GroupExists(System.String)">
             <summary>
             Determines whether the given group exists.
@@ -1935,7 +1958,7 @@
             <summary>The hashed password for the user account.</summary>
         </member>
         <member name="P:TShockAPI.DB.UserAccount.UUID">
-            <summary>The user's saved Univerally Unique Identifier token.</summary>
+            <summary>The user's saved Universally Unique Identifier token.</summary>
         </member>
         <member name="P:TShockAPI.DB.UserAccount.Group">
             <summary>The group object that the user account is a part of.</summary>
@@ -1974,10 +1997,6 @@
             <param name="password">The password to check against the user account object.</param>
             <returns>bool true, if the password matched, or false, if it didn't.</returns>
         </member>
-        <member name="M:TShockAPI.DB.UserAccount.UpgradePasswordToBCrypt(System.String)">
-            <summary>Upgrades a password to BCrypt, from an insecure hashing algorithm.</summary>
-            <param name="password">The raw user account password (unhashed) to upgrade</param>
-        </member>
         <member name="M:TShockAPI.DB.UserAccount.UpgradePasswordWorkFactor(System.String)">
             <summary>Upgrades a password to the highest work factor available in the config.</summary>
             <param name="password">The raw user account password (unhashed) to upgrade</param>
@@ -1990,25 +2009,6 @@
             <summary>Creates a BCrypt hash for a user account and stores it in this object.</summary>
             <param name="password">The plain text password to hash</param>
             <param name="workFactor">The work factor to use in generating the password hash</param>
-        </member>
-        <member name="F:TShockAPI.DB.UserAccount.HashTypes">
-            <summary>
-            A dictionary of hashing algorithms and an implementation object.
-            </summary>
-        </member>
-        <member name="M:TShockAPI.DB.UserAccount.HashPassword(System.Byte[])">
-            <summary>
-            Returns a hashed string for a given string based on the config file's hash algo
-            </summary>
-            <param name="bytes">bytes to hash</param>
-            <returns>string hash</returns>
-        </member>
-        <member name="M:TShockAPI.DB.UserAccount.HashPassword(System.String)">
-            <summary>
-            Returns a hashed string for a given string based on the config file's hash algo
-            </summary>
-            <param name="password">string to hash</param>
-            <returns>string hash</returns>
         </member>
         <member name="M:TShockAPI.DB.UserAccount.Equals(TShockAPI.DB.UserAccount)">
             <summary>Indicates whether the current <see cref="T:TShockAPI.DB.UserAccount"/> is equal to another <see cref="T:TShockAPI.DB.UserAccount"/>.</summary>
@@ -2124,7 +2124,7 @@
             <param name="warpName">The warp name.</param>
             <param name="x">The X position.</param>
             <param name="y">The Y position.</param>
-            <returns>Whether the operation suceeded.</returns>
+            <returns>Whether the operation succeeded.</returns>
         </member>
         <member name="M:TShockAPI.DB.WarpManager.Hide(System.String,System.Boolean)">
             <summary>
@@ -2132,7 +2132,7 @@
             </summary>
             <param name="warpName">The warp name.</param>
             <param name="state">The state.</param>
-            <returns>Whether the operation suceeded.</returns>
+            <returns>Whether the operation succeeded.</returns>
         </member>
         <member name="T:TShockAPI.DB.Warp">
             <summary>
@@ -2359,7 +2359,7 @@
         </member>
         <member name="P:TShockAPI.Handlers.NetModules.PylonHandler.PylonEventType">
             <summary>
-            Event occuring
+            Event occurring
             </summary>
         </member>
         <member name="P:TShockAPI.Handlers.NetModules.PylonHandler.TileX">
@@ -3100,7 +3100,7 @@
             Writes a message to the log
             </summary>
             <param name="message">Message to write</param>
-            <param name="level">LogLevel assosciated with the message</param>
+            <param name="level">LogLevel associated with the message</param>
         </member>
         <member name="M:TShockAPI.ILog.ConsoleDebug(System.String)">
             <summary>
@@ -3814,7 +3814,7 @@
         </member>
         <member name="P:TShockAPI.CommandArgs.Parameters">
             <summary>
-            Parameters passed to the arguement. Does not include the command name.
+            Parameters passed to the argument. Does not include the command name.
             IE '/kick "jerk face"' will only have 1 argument
             </summary>
         </member>
@@ -4075,7 +4075,7 @@
         </member>
         <member name="P:TShockAPI.GetDataHandlers.PlayerUpdateEventArgs.OriginalPos">
             <summary>
-            Original poisition of the player when using Potion of Return.
+            Original position of the player when using Potion of Return.
             </summary>
         </member>
         <member name="P:TShockAPI.GetDataHandlers.PlayerUpdateEventArgs.HomePos">
@@ -4310,6 +4310,11 @@
             ???
             </summary>
         </member>
+        <member name="P:TShockAPI.GetDataHandlers.NewProjectileEventArgs.Ai">
+            <summary>
+            The special meaning of the projectile.
+            </summary>
+        </member>
         <member name="F:TShockAPI.GetDataHandlers.NewProjectile">
             <summary>
             NewProjectile - Called when a client creates a new projectile
@@ -4357,7 +4362,7 @@
             <summary>The projectile's identity...?</summary>
         </member>
         <member name="F:TShockAPI.GetDataHandlers.ProjectileKillEventArgs.ProjectileOwner">
-            <summary>The the player index of the projectile's owner (Main.players).</summary>
+            <summary>The player index of the projectile's owner (Main.players).</summary>
         </member>
         <member name="F:TShockAPI.GetDataHandlers.ProjectileKillEventArgs.ProjectileIndex">
             <summary>The index of the projectile in Main.projectile.</summary>
@@ -4548,6 +4553,21 @@
             PlayerZone - When the player sends it's zone/biome information to the server
             </summary>
         </member>
+        <member name="T:TShockAPI.GetDataHandlers.NpcTalkEventArgs">
+            <summary>
+            Using when player trying to talk to a NPC
+            </summary>
+        </member>
+        <member name="P:TShockAPI.GetDataHandlers.NpcTalkEventArgs.PlayerId">
+            <summary>
+            The Terraria ID of the player talking to the NPC
+            </summary>
+        </member>
+        <member name="P:TShockAPI.GetDataHandlers.NpcTalkEventArgs.NPCTalkTarget">
+            <summary>
+            The NPC ID of the NPC the player is talking to
+            </summary>
+        </member>
         <member name="T:TShockAPI.GetDataHandlers.PlayerAnimationEventArgs">
             <summary>
             For use with a PlayerAnimation event
@@ -4586,6 +4606,26 @@
         <member name="F:TShockAPI.GetDataHandlers.PlayerTeam">
             <summary>
             TogglePvp - called when a player toggles pvp
+            </summary>
+        </member>
+        <member name="T:TShockAPI.GetDataHandlers.SignReadEventArgs">
+            <summary>
+            For use in a SignRead event
+            </summary>
+        </member>
+        <member name="P:TShockAPI.GetDataHandlers.SignReadEventArgs.X">
+            <summary>
+            X location of the sign
+            </summary>
+        </member>
+        <member name="P:TShockAPI.GetDataHandlers.SignReadEventArgs.Y">
+            <summary>
+            Y location of the sign
+            </summary>
+        </member>
+        <member name="F:TShockAPI.GetDataHandlers.SignRead">
+            <summary>
+            Sign - Called when a sign is read
             </summary>
         </member>
         <member name="T:TShockAPI.GetDataHandlers.SignEventArgs">
@@ -5014,7 +5054,7 @@
         </member>
         <member name="P:TShockAPI.GetDataHandlers.PlayerDamageEventArgs.Direction">
             <summary>
-            The direction the damage is occuring from
+            The direction the damage is occurring from
             </summary>
         </member>
         <member name="P:TShockAPI.GetDataHandlers.PlayerDamageEventArgs.Damage">
@@ -5057,7 +5097,7 @@
         </member>
         <member name="P:TShockAPI.GetDataHandlers.KillMeEventArgs.Damage">
             <summary>
-            Amount of damage delt
+            Amount of damage dealt
             </summary>
         </member>
         <member name="P:TShockAPI.GetDataHandlers.KillMeEventArgs.Pvp">
@@ -5073,7 +5113,11 @@
             KillMe - Terraria's crappy way of handling damage from players
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:TShockAPI.GetDataHandlers.EmojiEventArgs" -->
+        <member name="T:TShockAPI.GetDataHandlers.EmojiEventArgs">
+            <summary>
+            For use in an Emoji event.
+            </summary>
+        </member>
         <member name="P:TShockAPI.GetDataHandlers.EmojiEventArgs.PlayerIndex">
             <summary>
             The player index in the packet, who sends the emoji.
@@ -5089,7 +5133,11 @@
             Called when a player sends an emoji.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:TShockAPI.GetDataHandlers.DisplayDollItemSyncEventArgs" -->
+        <member name="T:TShockAPI.GetDataHandlers.DisplayDollItemSyncEventArgs">
+            <summary>
+            For use in a TileEntityDisplayDollItemSync event.
+            </summary>
+        </member>
         <member name="P:TShockAPI.GetDataHandlers.DisplayDollItemSyncEventArgs.PlayerIndex">
             <summary>
             The player index in the packet who modifies the DisplayDoll item slot.
@@ -5112,7 +5160,7 @@
         </member>
         <member name="P:TShockAPI.GetDataHandlers.DisplayDollItemSyncEventArgs.IsDye">
             <summary>
-            Wether or not the slot that is being modified is a Dye slot.
+            Whether or not the slot that is being modified is a Dye slot.
             </summary>
         </member>
         <member name="P:TShockAPI.GetDataHandlers.DisplayDollItemSyncEventArgs.OldItem">
@@ -5130,7 +5178,11 @@
             Called when a player modifies a DisplayDoll (Mannequin) item slot.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:TShockAPI.GetDataHandlers.RequestTileEntityInteractionEventArgs" -->
+        <member name="T:TShockAPI.GetDataHandlers.RequestTileEntityInteractionEventArgs">
+            <summary>
+            For use in an OnRequestTileEntityInteraction event.
+            </summary>
+        </member>
         <member name="P:TShockAPI.GetDataHandlers.RequestTileEntityInteractionEventArgs.TileEntity">
             <summary>
             The TileEntity object that the player is requesting interaction with.
@@ -5450,7 +5502,7 @@
         <member name="M:TShockAPI.Group.SetPermission(System.Collections.Generic.List{System.String})">
             <summary>
             Clears the permission list and sets it to the list provided, 
-            will parse "!permssion" and add it to the negated permissions.
+            will parse "!permission" and add it to the negated permissions.
             </summary>
             <param name="permission">The new list of permissions to associate with the group.</param>
         </member>
@@ -5517,6 +5569,20 @@
         </member>
         <member name="T:TShockAPI.Bouncer">
             <summary>Bouncer is the TShock anti-hack and anti-cheat system.</summary>
+        </member>
+        <member name="T:TShockAPI.Bouncer.PlaceStyleCorrector">
+            <summary>
+            Represents a place style corrector.
+            </summary>
+            <param name="player">The player placing the tile.</param>
+            <param name="requestedPlaceStyle">The requested place style to be placed.</param>
+            <param name="actualItemPlaceStyle">The actual place style that should be placed, based of the player's held item.</param>
+            <returns>The correct place style in the current context.</returns>
+        </member>
+        <member name="F:TShockAPI.Bouncer.PlaceStyleCorrectors">
+            <summary>
+            Represents a dictionary of <see cref="T:TShockAPI.Bouncer.PlaceStyleCorrector"/>s, the key is the tile ID and the value is the corrector.
+            </summary>
         </member>
         <member name="M:TShockAPI.Bouncer.#ctor">
             <summary>Constructor call initializes Bouncer and related functionality.</summary>
@@ -5662,6 +5728,13 @@
             </summary>
             <param name="sender"></param>
             <param name="args"></param>
+        </member>
+        <member name="M:TShockAPI.Bouncer.GetMaxPlaceStyle(System.Int32)">
+            <summary>
+            Returns the max <see cref="F:Terraria.Item.placeStyle"/> associated with the given <paramref name="tileID"/>. Or -1 if there's no association
+            </summary>
+            <param name="tileID">Tile ID to query for</param>
+            <returns>The max <see cref="F:Terraria.Item.placeStyle"/>, otherwise -1 if there's no association</returns>
         </member>
         <member name="F:TShockAPI.Bouncer.orientableTiles">
             <summary>
@@ -5894,6 +5967,11 @@
             Hex code for a white highlight
             </summary>
         </member>
+        <member name="F:TShockAPI.Utils.CyanHighlight">
+            <summary>
+            Hex code for a cyan pastel color
+            </summary>
+        </member>
         <member name="F:TShockAPI.Utils.FirstItemPrefix">
             <summary>
             The lowest id for a prefix.
@@ -5950,7 +6028,7 @@
         </member>
         <member name="M:TShockAPI.Utils.Broadcast(System.Int32,System.String,System.Byte,System.Byte,System.Byte)">
             <summary>
-            Broadcasts a message from a Terraria playerplayer, not TShock
+            Broadcasts a message from a Terraria player, not TShock
             </summary>
             <param name="ply">ply - the Terraria player index that will send the packet</param>
             <param name="msg">msg - The message to send</param>
@@ -6209,7 +6287,10 @@
             </summary>
             <param name="exit"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:TShockAPI.Utils.DumpPermissionMatrix(System.String)" -->
+        <member name="M:TShockAPI.Utils.DumpPermissionMatrix(System.String)">
+            <summary>Dumps a matrix of all permissions &amp; all groups in Markdown table format.</summary>
+            <param name="path">The save destination.</param>
+        </member>
         <member name="M:TShockAPI.Utils.StartInvasion(System.Int32)">
             <summary>Starts an invasion on the server.</summary>
             <param name="type">The invasion type id.</param>
@@ -6272,7 +6353,9 @@
         <member name="F:TShockAPI.TShock.Players">
             <summary>Players - Contains all TSPlayer objects for accessing TSPlayers currently on the server</summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:TShockAPI.TShock.Bans" -->
+        <member name="F:TShockAPI.TShock.Bans">
+            <summary>Bans - Static reference to the ban manager for accessing bans &amp; related functions.</summary>
+        </member>
         <member name="F:TShockAPI.TShock.Warps">
             <summary>Warps - Static reference to the warp manager for accessing the warp system.</summary>
         </member>
@@ -6362,7 +6445,10 @@
             Called after TShock is initialized. Useful for plugins that needs hooks before tshock but also depend on tshock being loaded.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:TShockAPI.TShock.Version" -->
+        <member name="P:TShockAPI.TShock.Version">
+            <summary>Version - The version required by the TerrariaAPI to be passed back for checking &amp; loading the plugin.</summary>
+            <value>value - The version number specified in the Assembly, based on the VersionNum variable set in this class.</value>
+        </member>
         <member name="P:TShockAPI.TShock.Name">
             <summary>Name - The plugin name.</summary>
             <value>value - "TShock"</value>
@@ -6513,7 +6599,7 @@
         </member>
         <member name="M:TShockAPI.TShock.OnProjectileSetDefaults(TerrariaApi.Server.SetDefaultsEventArgs{Terraria.Projectile,System.Int32})">
             <summary>OnProjectileSetDefaults - Called when a projectile sets the default attributes for itself.</summary>
-            <param name="e">e - The SetDefaultsEventArgs object praameterized with Projectile and int.</param>
+            <param name="e">e - The SetDefaultsEventArgs object parameterized with Projectile and int.</param>
         </member>
         <member name="M:TShockAPI.TShock.NetHooks_SendData(TerrariaApi.Server.SendDataEventArgs)">
             <summary>NetHooks_SendData - Fired when the server sends data.</summary>
@@ -6964,7 +7050,7 @@
         </member>
         <member name="P:TShockAPI.TSPlayer.TileY">
             <summary>
-            Player Y cooridnate divided by 16. Supposed Y world coordinate.
+            Player Y coordinate divided by 16. Supposed Y world coordinate.
             </summary>
         </member>
         <member name="P:TShockAPI.TSPlayer.InventorySlotAvailable">
@@ -7217,6 +7303,12 @@
             Sets the player's team.
             </summary>
             <param name="team">The team color index.</param>
+        </member>
+        <member name="M:TShockAPI.TSPlayer.SetPvP(System.Boolean,System.Boolean)">
+            <summary>
+            Sets the player's pvp.
+            </summary>
+            <param name="mode">The state of the pvp mode.</param>
         </member>
         <member name="F:TShockAPI.TSPlayer.ActiveChest">
             <summary>
