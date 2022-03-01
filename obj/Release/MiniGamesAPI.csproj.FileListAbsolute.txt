@@ -3,4 +3,11 @@ D:\Projects\MiniGamesAPI\MiniGamesAPI\bin\Release\MiniGamesAPI.pdb
 D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.csproj.CoreCompileInputs.cache
 D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.dll
 D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.pdb
-D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.csproj.AssemblyReference.cache
+D:\Projects\MiniGamesAPI\MiniGamesAPI\bin\Release\Newtonsoft.Json.dll
+D:\Projects\MiniGamesAPI\MiniGamesAPI\bin\Release\OTAPI.dll
+D:\Projects\MiniGamesAPI\MiniGamesAPI\bin\Release\TerrariaServer.exe
+D:\Projects\MiniGamesAPI\MiniGamesAPI\bin\Release\TShockAPI.dll
+D:\Projects\MiniGamesAPI\MiniGamesAPI\bin\Release\Newtonsoft.Json.xml
+D:\Projects\MiniGamesAPI\MiniGamesAPI\bin\Release\OTAPI.pdb
+D:\Projects\MiniGamesAPI\MiniGamesAPI\bin\Release\TShockAPI.xml
+D:\Projects\MiniGamesAPI\MiniGamesAPI\obj\Release\MiniGamesAPI.csproj.CopyComplete

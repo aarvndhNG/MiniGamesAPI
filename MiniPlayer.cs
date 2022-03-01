@@ -20,7 +20,7 @@ namespace MiniGamesAPI
         public int Deaths { get; set; }
         public int Assistances { get; set; }
         public int ID { get; set; }
-        public string Name { get { return Player.Name; } }
+        public string Name { get; set; }
         public bool IsReady { get; set; }
         public int CurrentRoomID { get; set; }
         public int SelectPackID { get; set; }

@@ -79,5 +79,20 @@ namespace MiniGamesAPI
         public static IEnumerable<float> TopTen(List<float> records) {
             return records.OrderByDescending(p=>p);        
         }
+        public static void ClearRangeItem(Vector2 position,int id,int radius) 
+        {
+            for (int i = 0; i < Terraria.Main.maxItems; i++)
+            {
+                var item = Terraria.Main.item[i];
+                float dX = item.position.X - position.X;
+                float dY = item.position.Y - position.Y;
+                if (item.active == true && item.netID==id && dX * dX + dY * dY <= radius * radius * 256f)
+                {
+                    Terraria.Main.item[i].active = false;
+                    TSPlayer.All.SendData(PacketTypes.ItemDrop, "", i);
+                }
+            }
+
+        }
     }
 }

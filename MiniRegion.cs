@@ -107,5 +107,9 @@ namespace MiniGamesAPI
 			TSPlayer.All.SendData(PacketTypes.ProjectileNew, "", proj_4, 0f, 0f, 0f, 0);
 			TSPlayer.All.SendData(PacketTypes.ProjectileNew, "", proj_5, 0f, 0f, 0f, 0);
 		}
+		public bool Contain(Point point)
+		{
+			return Area.Contains(point);
+		}
 	}
 }
