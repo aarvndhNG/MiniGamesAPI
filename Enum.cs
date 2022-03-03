@@ -10,6 +10,7 @@ namespace MiniGamesAPI
     {
         public enum RoomStatus{
         Waiting,
+        Selecting,
         Gaming,
         Concluding,
         Restoring,

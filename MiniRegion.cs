@@ -111,5 +111,9 @@ namespace MiniGamesAPI
 		{
 			return Area.Contains(point);
 		}
+		public bool Contain(int x,int y)
+		{
+			return Area.Contains(x,y);
+		}
 	}
 }
