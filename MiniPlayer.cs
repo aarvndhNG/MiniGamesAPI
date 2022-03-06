@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using TShockAPI;
 using static MiniGamesAPI.Enum;
@@ -27,11 +28,11 @@ namespace MiniGamesAPI
         public MiniPack BackUp { get; set; }
         public PlayerStatus Status { get; set; }
         public Vector2 Position { get { return Player.TPlayer.position; } }
-        public void Ready() 
+        public void Ready()
         {
             IsReady = !IsReady;
         }
-        public MiniPlayer(int id,TSPlayer player) 
+        public MiniPlayer(int id, TSPlayer player)
         {
             Player = player;
             BackUp = null;
@@ -43,9 +44,9 @@ namespace MiniGamesAPI
             CurrentRoomID = 0;
             SelectPackID = 0;
         }
-        public MiniPlayer() 
+        public MiniPlayer()
         {
-            
+
         }
         public override string ToString()
         {
@@ -59,40 +60,40 @@ namespace MiniGamesAPI
             playerInfo.AppendLine($"当前状态：{Status}");
             return playerInfo.ToString();
         }
-        public virtual void Teleport(Point point) 
+        public virtual void Teleport(Point point)
         {
             var x = Math.Max(0, point.X);
             var y = Math.Max(0, point.Y);
             x = Math.Min(x, Terraria.Main.maxTilesX - 1);
             y = Math.Min(y, Terraria.Main.maxTilesY - 1);
-            Player.Teleport(x*16,y*16-48);
+            Player.Teleport(x * 16, y * 16 - 48);
         }
-        public virtual void Teleport(int x,int y)
+        public virtual void Teleport(int x, int y)
         {
             x = Math.Min(x, Terraria.Main.maxTilesX - 1);
             y = Math.Min(y, Terraria.Main.maxTilesY - 1);
             Player.Teleport(x * 16, y * 16 - 48);
         }
-        public virtual void SendInfoMessage(string msg) 
+        public virtual void SendInfoMessage(string msg)
         {
-            Player.SendMessage(msg,Color.DarkTurquoise);
-        
+            Player.SendMessage(msg, Color.DarkTurquoise);
+
         }
-        public virtual void SendSuccessMessage(string msg) 
+        public virtual void SendSuccessMessage(string msg)
         {
-            Player.SendMessage(msg,Color.MediumAquamarine);
+            Player.SendMessage(msg, Color.MediumAquamarine);
         }
         public virtual void SendErrorMessage(string msg)
         {
-            Player.SendMessage(msg,Color.Crimson);
+            Player.SendMessage(msg, Color.Crimson);
         }
-        public virtual void SendMessage(string msg,Color color)
+        public virtual void SendMessage(string msg, Color color)
         {
             Player.SendMessage(msg, color);
         }
-        public virtual void SetBuff(int type,int time=3600,bool bypass=false) 
+        public virtual void SetBuff(int type, int time = 3600, bool bypass = false)
         {
-            Player.SetBuff(type,time,bypass);
+            Player.SetBuff(type, time, bypass);
         }
         public virtual void SetPVP(bool value)
         {
@@ -108,25 +109,25 @@ namespace MiniGamesAPI
         public virtual void RestorePlayerInv(MiniPack pack) {
             pack.RestoreCharacter(Player);
         }
-        public virtual void DropItem(int itemID) 
+        public virtual void DropItem(int itemID)
         {
             int slot = Player.TPlayer.FindItem(itemID);
             var item = Player.TPlayer.inventory[slot];
             //下面是实现物品掉落
-            var dropItem = Item.NewItem(Player.TPlayer.position,Player.TPlayer.width,Player.TPlayer.height,item.type,item.stack,true,item.prefix,false);
-            TSPlayer.All.SendData(PacketTypes.ItemDrop,"",dropItem);
+            var dropItem = Item.NewItem(new EntitySource_DebugCommand(), Player.TPlayer.position, Player.TPlayer.width, Player.TPlayer.height, item.type, item.stack, true, item.prefix, false);
+            TSPlayer.All.SendData(PacketTypes.ItemDrop, "", dropItem);
 
             //实现物品没收
-            
+
             item.netID = 0;
             TSPlayer.All.SendData(PacketTypes.PlayerSlot, item.Name, Player.Index, slot, item.prefix);
         }
-        public virtual bool CheckContainItem(int netid) 
+        public virtual bool CheckContainItem(int netid)
         {
             return Player.TPlayer.HasItem(netid);
         }
         public float KDA() {
-            float kills =(float) Kills;
+            float kills = (float)Kills;
             float deaths = (float)Deaths;
             float assists = (float)Assistances;
             if (kills == 0) kills = 1;
@@ -136,7 +137,7 @@ namespace MiniGamesAPI
             return kda;
         }
         public Vector2 ToAnotherPlayer(MiniPlayer player) {
-            return player.Position-this.Position;  
+            return player.Position - this.Position;
         }
         public bool ClearRecord() {
             Kills = 0;
@@ -145,13 +146,23 @@ namespace MiniGamesAPI
             return true;
         }
         public void SendBoardMsg(string info) {
-            Player.SendData(PacketTypes.Status,info);
+            Player.SendData(PacketTypes.Status, info);
         }
-        public void Godmode(bool state) 
+        public void Godmode(bool state)
         {
             Player.GodMode = state;
             var power = CreativePowerManager.Instance.GetPower<CreativePowers.GodmodePower>();
-            power.SetEnabledState(Player.Index,Player.GodMode);
+            power.SetEnabledState(Player.Index, Player.GodMode);
+        }
+        public int FindItem(int netid)
+        {
+            return Player.TPlayer.FindItem(netid);
+        }
+        public void RemoveItem(int netid) 
+        {
+            var slot = FindItem(netid);
+            Player.TPlayer.inventory[slot].netDefaults(0);
+            Player.SendData(PacketTypes.PlayerSlot,"",Player.Index,slot, Player.TPlayer.inventory[slot].prefix);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using TShockAPI;
 
 namespace MiniGamesAPI
@@ -17,7 +18,7 @@ namespace MiniGamesAPI
         public static int DropItem(float x,float y,int netid,int stack,byte prefix) 
         {
             var tempItem = TShock.Utils.GetItemById(netid);
-            int item = Item.NewItem((int)x,(int)y,tempItem.width,tempItem.height,netid,stack,false,prefix);
+            int item = Item.NewItem(new EntitySource_DebugCommand(), (int)x,(int)y,tempItem.width,tempItem.height,netid,stack,false,prefix);
             TSPlayer.All.SendData(PacketTypes.ItemDrop,"",item);
             return item;
         }

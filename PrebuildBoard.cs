@@ -52,9 +52,7 @@ namespace MiniGamesAPI
 			int highX = Netplay.GetSectionX(x2);
 			int lowY = Netplay.GetSectionY(y);
 			int highY = Netplay.GetSectionY(y2);
-			foreach (RemoteClient client in from s in Netplay.Clients
-											where s.IsActive
-											select s)
+			foreach (RemoteClient client in Netplay.Clients.Where(c=>c.IsActive))
 			{
 				for (int i = lowX; i <= highX; i++)
 				{
@@ -64,6 +62,15 @@ namespace MiniGamesAPI
 					}
 				}
 			}
+		}
+		public string ShowInfo() 
+		{
+			StringBuilder info = new StringBuilder();
+            foreach (var tile in Tiles)
+            {
+				info.Append($"[{tile.Tile.wall}]");
+            }
+			return info.ToString();
 		}
 	}
 }
