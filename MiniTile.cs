@@ -11,26 +11,32 @@ namespace MiniGamesAPI
 	public class MiniTile
 	{
 		public int X { get; set; }
-		
 		public int Y { get; set; }
+		public byte PaintColor { get; set; }
 		public bool Active { get { return Tile.active(); } }
-		public short PaintColor { get { return Tile.sTileHeader; }set { Tile.sTileHeader = value; } }
+		public int Type { get { return Tile.type; } }
 		public ITile Tile { get; set; }
 		public MiniTile(int x, int y, ITile tile)
 		{
-			this.X = x;
-			this.Y = y;
-			this.Tile = tile;
-			
+			X = x;
+			Y = y;
+			PaintColor = tile.color();
+			Tile = new Tile(tile);
+
 		}	
 		public void Place()
 		{
-            
-			WorldGen.PlaceTile(this.X, this.Y, (int)this.Tile.type, false, false, -1,0);
+            if (Active)
+            {
+				WorldGen.PlaceTile(X, Y, this.Type, false, false, -1, 0);
+			}
 		}
 		public void Kill() {
-			WorldGen.KillTile(this.X,this.Y);
+			WorldGen.KillTile(X,Y);
 		}
-	
+		public void Paint() 
+		{
+			Tile.color(PaintColor);
+		}
 	}
 }
