@@ -12,7 +12,7 @@ namespace MiniGamesAPI
 	{
 		public int X { get; set; }
 		public int Y { get; set; }
-		public byte PaintColor { get; set; }
+		public byte PaintColor { get { return Tile.color(); } }
 		public bool Active { get { return Tile.active(); } }
 		public int Type { get { return Tile.type; } }
 		public ITile Tile { get; set; }
@@ -20,7 +20,6 @@ namespace MiniGamesAPI
 		{
 			X = x;
 			Y = y;
-			PaintColor = tile.color();
 			Tile = new Tile(tile);
 
 		}	
@@ -36,7 +35,7 @@ namespace MiniGamesAPI
 		}
 		public void Paint() 
 		{
-			Tile.color(PaintColor);
+			WorldGen.paintTile(X,Y,PaintColor);
 		}
 	}
 }
