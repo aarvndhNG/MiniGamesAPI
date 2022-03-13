@@ -35,7 +35,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\BeanPaste\Desktop\泰拉瑞亚相关\Experimental.TShock\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OTAPI">
+    <Reference Include="OTAPI, Version=1.4.3.6, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\BeanPaste\Desktop\泰拉瑞亚相关\Experimental.TShock\OTAPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -73,6 +74,7 @@
   <ItemGroup>
     <Content Include="Reference\Newtonsoft.Json.dll" />
     <Content Include="Reference\Newtonsoft.Json.xml" />
+    <Content Include="Reference\OTAPI.dll" />
     <Content Include="Reference\TerrariaServer.exe" />
     <Content Include="Reference\TShockAPI.dll" />
     <Content Include="Reference\TShockAPI.XML" />

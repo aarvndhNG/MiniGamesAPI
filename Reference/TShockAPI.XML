@@ -4909,6 +4909,36 @@
         <member name="F:TShockAPI.GetDataHandlers.HealOtherPlayer">
             <summary>When a player heals another player</summary>
         </member>
+        <member name="T:TShockAPI.GetDataHandlers.ReleaseNpcEventArgs">
+            <summary>
+            The ReleaseNPC event arguments
+            </summary>
+        </member>
+        <member name="P:TShockAPI.GetDataHandlers.ReleaseNpcEventArgs.X">
+            <summary>
+            The X value of where NPC released
+            </summary>
+        </member>
+        <member name="P:TShockAPI.GetDataHandlers.ReleaseNpcEventArgs.Y">
+            <summary>
+            The Y value of where NPC released
+            </summary>
+        </member>
+        <member name="P:TShockAPI.GetDataHandlers.ReleaseNpcEventArgs.Type">
+            <summary>
+            The NPC Type that player release
+            </summary>
+        </member>
+        <member name="P:TShockAPI.GetDataHandlers.ReleaseNpcEventArgs.Style">
+            <summary>
+            The NPC release style
+            </summary>
+        </member>
+        <member name="F:TShockAPI.GetDataHandlers.ReleaseNPC">
+            <summary>
+            Called when player release a NPC, for checking critter released from item.
+            </summary>
+        </member>
         <member name="T:TShockAPI.GetDataHandlers.PlaceObjectEventArgs">
             <summary>The arguments to the PlaceObject hook.</summary>
         </member>
@@ -5677,6 +5707,13 @@
         </member>
         <member name="M:TShockAPI.Bouncer.OnHealOtherPlayer(System.Object,TShockAPI.GetDataHandlers.HealOtherPlayerEventArgs)">
             <summary>Bouncer's HealOther handler prevents gross misuse of HealOther packets by hackers.</summary>
+            <param name="sender">The object that triggered the event.</param>
+            <param name="args">The packet arguments that the event has.</param>
+        </member>
+        <member name="M:TShockAPI.Bouncer.OnReleaseNPC(System.Object,TShockAPI.GetDataHandlers.ReleaseNpcEventArgs)">
+            <summary>
+            A bouncer for checking NPC released by player
+            </summary>
             <param name="sender">The object that triggered the event.</param>
             <param name="args">The packet arguments that the event has.</param>
         </member>
@@ -6996,6 +7033,11 @@
             Gets the player's IP.
             </summary>
         </member>
+        <member name="P:TShockAPI.TSPlayer.Inventory">
+            <summary>
+            Gets the player's inventory (first 5 rows)
+            </summary>
+        </member>
         <member name="P:TShockAPI.TSPlayer.Accessories">
             <summary>
             Gets the player's accessories.
@@ -7167,6 +7209,18 @@
             </summary>
             <param name="x">The x coordinate to send.</param>
             <param name="y">The y coordinate to send.</param>
+            <param name="size">The size square set of tiles to send.</param>
+            <returns>true if the tile square was sent successfully, else false</returns>
+        </member>
+        <member name="M:TShockAPI.TSPlayer.SendTileSquareCentered(System.Int32,System.Int32,System.Byte)">
+            <summary>
+            Sends a tile square at a center location with a given size.
+            Typically used to revert changes by Bouncer through sending the
+            "old" version of modified data back to a client.
+            Prevents desync issues.
+            </summary>
+            <param name="x">The x coordinates of the center of the square.</param>
+            <param name="y">The y coordinates of the center of the square.</param>
             <param name="size">The size square set of tiles to send.</param>
             <returns>true if the tile square was sent successfully, else false</returns>
         </member>
