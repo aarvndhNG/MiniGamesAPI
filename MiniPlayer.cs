@@ -183,7 +183,7 @@ namespace MiniGamesAPI
                     break;
             }
             int p = Projectile.NewProjectile(new EntitySource_DebugCommand(), Player.TPlayer.position.X, Player.TPlayer.position.Y - 64f, 0f, -8f, type, 0, 0);
-            Main.projectile[p].Kill();
+            TSPlayer.All.SendData(PacketTypes.ProjectileNew,"",p);
         }
     }
 }

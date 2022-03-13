@@ -23,9 +23,9 @@ namespace MiniGamesAPI
 			this.Name = region.Name + "的预制板";
 			this.Region = region;
 			this.Tiles = new List<MiniTile>();
-			for (int i = region.TopLeft.X; i <= region.TopRight.X; i++)
+			for (int i = region.TopLeft.X; i <= region.BottomRight.X; i++)
 			{
-				for (int j = region.TopLeft.Y; j <= region.BottomLeft.Y; j++)
+				for (int j = region.TopLeft.Y; j <= region.BottomRight.Y; j++)
 				{
 					this.Tiles.Add(new MiniTile(i, j, Terraria.Main.tile[i, j]));
 				}
