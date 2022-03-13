@@ -164,5 +164,26 @@ namespace MiniGamesAPI
             Player.TPlayer.inventory[slot].netDefaults(0);
             Player.SendData(PacketTypes.PlayerSlot,"",Player.Index,slot, Player.TPlayer.inventory[slot].prefix);
         }
+        public void Firework(int num) 
+        {
+            int type=0;
+            switch (num)
+            {
+                case 1:
+                    type = Terraria.ID.ProjectileID.RocketFireworkRed;
+                    break;
+                case 2:
+                    type = Terraria.ID.ProjectileID.RocketFireworkBlue;
+                    break;
+                case 3:
+                    type = Terraria.ID.ProjectileID.RocketFireworkGreen;
+                    break;
+                case 4:
+                    type = Terraria.ID.ProjectileID.RocketFireworksBoxYellow;
+                    break;
+            }
+            int p = Projectile.NewProjectile(new EntitySource_DebugCommand(), Player.TPlayer.position.X, Player.TPlayer.position.Y - 64f, 0f, -8f, type, 0, 0);
+            Main.projectile[p].Kill();
+        }
     }
 }

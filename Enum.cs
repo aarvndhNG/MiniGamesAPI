@@ -14,7 +14,7 @@ namespace MiniGamesAPI
         Gaming,
         Concluding,
         Restoring,
-        Stoped
+        Stopped
         }
         public enum PlayerStatus { 
         Waiting,

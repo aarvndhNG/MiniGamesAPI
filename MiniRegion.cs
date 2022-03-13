@@ -12,22 +12,22 @@ namespace MiniGamesAPI
 {
 	public class MiniRegion
 	{
-	
+
 		public string Name { get; set; }
 
-		
+
 		public int ID { get; set; }
 
-		
+
 		public List<string> AllowGroups { get; set; }
 
-		
+
 		public List<string> AllowUsers { get; set; }
 
-		
+
 		public List<string> Owners { get; set; }
 
-		
+
 		public Point TopLeft
 		{
 			get
@@ -36,7 +36,7 @@ namespace MiniGamesAPI
 			}
 		}
 
-		
+
 		public Point TopRight
 		{
 			get
@@ -45,7 +45,7 @@ namespace MiniGamesAPI
 			}
 		}
 
-		
+
 		public Point BottomLeft
 		{
 			get
@@ -54,7 +54,7 @@ namespace MiniGamesAPI
 			}
 		}
 
-		
+
 		public Point BottomRight
 		{
 			get
@@ -63,7 +63,7 @@ namespace MiniGamesAPI
 			}
 		}
 
-		
+
 		public Point Center
 		{
 			get
@@ -72,13 +72,13 @@ namespace MiniGamesAPI
 			}
 		}
 
-		
+
 		public Rectangle Area { get; set; }
 
-		
+
 		public bool IsLocked { get; set; }
 
-		
+
 		public MiniRegion(string name, int id, Rectangle area)
 		{
 			this.ID = id;
@@ -90,7 +90,7 @@ namespace MiniGamesAPI
 			this.Owners = new List<string>();
 		}
 
-		
+
 		public void ShowFramework()
 		{
 			Vector2 width = new Vector2((float)(this.TopRight.X * 16 - this.TopLeft.X * 16), (float)(this.TopRight.Y * 16 - this.TopLeft.Y * 16));
@@ -111,9 +111,23 @@ namespace MiniGamesAPI
 		{
 			return Area.Contains(point);
 		}
-		public bool Contain(int x,int y)
+		public bool Contain(int x, int y)
 		{
-			return Area.Contains(x,y);
+			return Area.Contains(x, y);
+		}
+		public void BuildFramework(int tileID) 
+		{
+            for (int i = TopLeft.X; i < BottomRight.X; i++)
+            {
+				for (int j = TopLeft.Y; j < BottomRight.Y; j++)
+				{
+                    if (true)
+                    {
+
+                    }
+				}
+			}
+			
 		}
 	}
 }

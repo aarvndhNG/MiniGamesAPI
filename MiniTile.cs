@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using TShockAPI;
 
 namespace MiniGamesAPI
 {
@@ -22,20 +23,25 @@ namespace MiniGamesAPI
 			Y = y;
 			Tile = new Tile(tile);
 
-		}	
+		}
 		public void Place()
 		{
-            if (Active)
-            {
+			if (Active)
+			{
 				WorldGen.PlaceTile(X, Y, this.Type, false, false, -1, 0);
+				WorldGen.PlaceWall(X,Y,this.Tile.wall);
 			}
 		}
 		public void Kill() {
-			WorldGen.KillTile(X,Y);
+			WorldGen.KillTile(X, Y);
 		}
-		public void Paint() 
+		public void Paint()
 		{
-			WorldGen.paintTile(X,Y,PaintColor);
+			WorldGen.paintTile(X, Y, PaintColor);
+		}
+		public void Update() 
+		{
+			TSPlayer.All.SendTileSquare(X,Y,1);
 		}
 	}
 }
