@@ -41,7 +41,7 @@ namespace MiniGamesAPI
 		{
 			get
 			{
-				return new Point(this.Area.X + this.Area.Width + 1, this.Area.Y);
+				return new Point(this.Area.X + this.Area.Width , this.Area.Y);
 			}
 		}
 
@@ -50,7 +50,7 @@ namespace MiniGamesAPI
 		{
 			get
 			{
-				return new Point(this.Area.X, this.Area.Y + this.Area.Height + 1);
+				return new Point(this.Area.X, this.Area.Y + this.Area.Height);
 			}
 		}
 
@@ -93,8 +93,8 @@ namespace MiniGamesAPI
 
 		public void ShowFramework()
 		{
-			Vector2 width = new Vector2((float)(this.TopRight.X * 16 - this.TopLeft.X * 16), (float)(this.TopRight.Y * 16 - this.TopLeft.Y * 16));
-			Vector2 height = new Vector2(0f, (float)(this.BottomLeft.Y * 16 - this.TopLeft.Y * 16));
+			Vector2 width = new Vector2((float)((this.TopRight.X+1) * 16 - this.TopLeft.X * 16), (float)(this.TopRight.Y + 1) * 16 - this.TopLeft.Y * 16);
+			Vector2 height = new Vector2(0f, (float)((this.BottomLeft.Y+1) * 16 - this.TopLeft.Y * 16));
 			Vector2 center = new Vector2((float)(this.Area.Center.X * 16), (float)(this.Area.Center.Y * 16));
 			int proj_ = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2((float)(this.TopLeft.X * 16), (float)(this.TopLeft.Y * 16)), width * 0.01f, 132, 0, 0f, 255, 0f, 0f);
 			int proj_2 = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2((float)(this.TopLeft.X * 16), (float)(this.TopLeft.Y * 16)), height * 0.01f, 132, 0, 0f, 255, 0f, 0f);

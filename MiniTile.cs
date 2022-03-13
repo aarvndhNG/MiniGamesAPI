@@ -13,7 +13,6 @@ namespace MiniGamesAPI
 	{
 		public int X { get; set; }
 		public int Y { get; set; }
-		public byte PaintColor { get { return Tile.color(); } }
 		public bool Active { get { return Tile.active(); } }
 		public int Type { get { return Tile.type; } }
 		public ITile Tile { get; set; }
@@ -26,22 +25,19 @@ namespace MiniGamesAPI
 		}
 		public void Place()
 		{
-			if (Active)
+			/*if (Active)
 			{
-				WorldGen.PlaceTile(X, Y, this.Type, false, false, -1, 0);
+				WorldGen.PlaceTile(X, Y, this.Type, false, false, -1, Tile.blockType());
 				WorldGen.PlaceWall(X,Y,this.Tile.wall);
-			}
+			}*/
+			Terraria.Main.tile[X, Y] = new Tile(Tile);
 		}
 		public void Kill() {
 			WorldGen.KillTile(X, Y);
 		}
-		public void Paint()
-		{
-			WorldGen.paintTile(X, Y, PaintColor);
-		}
 		public void Update() 
 		{
-			TSPlayer.All.SendTileSquare(X,Y,1);
+			TSPlayer.All.SendTileRect((short)X,(short)Y,1,1);
 		}
 	}
 }
