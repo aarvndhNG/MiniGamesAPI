@@ -9,7 +9,7 @@ using Terraria;
 using Terraria.Localization;
 using TShockAPI;
 
-namespace MiniGamesAPI
+namespace MiniGamesAPI.Core
 {
 	public class MiniPack
 	{

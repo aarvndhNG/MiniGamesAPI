@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 
-namespace MiniGamesAPI
+namespace MiniGamesAPI.Core
 {
 	public class MiniNpc
 	{

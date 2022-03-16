@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Terraria;
 using TShockAPI;
 
-namespace MiniGamesAPI
+namespace MiniGamesAPI.Core
 {
 	public class PrebuildBoard
 	{

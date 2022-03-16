@@ -11,7 +11,7 @@ using Terraria.GameContent.Creative;
 using TShockAPI;
 using static MiniGamesAPI.Enum;
 
-namespace MiniGamesAPI
+namespace MiniGamesAPI.Core
 {
     public class MiniPlayer
     {

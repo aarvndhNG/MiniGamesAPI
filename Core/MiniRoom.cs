@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static MiniGamesAPI.Enum;
 
-namespace MiniGamesAPI
+namespace MiniGamesAPI.Core
 {
     public class MiniRoom
     {

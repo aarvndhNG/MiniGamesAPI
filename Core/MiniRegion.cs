@@ -8,7 +8,7 @@ using Terraria;
 using Terraria.DataStructures;
 using TShockAPI;
 
-namespace MiniGamesAPI
+namespace MiniGamesAPI.Core
 {
 	public class MiniRegion
 	{
