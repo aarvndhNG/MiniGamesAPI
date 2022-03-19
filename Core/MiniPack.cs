@@ -526,10 +526,7 @@ namespace MiniGamesAPI.Core
 		
 		public void RestoreCharacter(MiniPlayer plr)
 		{
-			if (plr == null)
-			{
-				return;
-			}
+			if (plr == null) return;
 			this.RestoreCharacter(plr.Player);
 		}
 
