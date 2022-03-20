@@ -121,13 +121,26 @@ namespace MiniGamesAPI.Core
             {
 				for (int j = TopLeft.Y; j < BottomRight.Y; j++)
 				{
-                    if (true)
-                    {
-
-                    }
+					if (i > TopLeft.X && i < TopRight.X && j > TopLeft.Y && j < BottomRight.Y) continue;
+					WorldGen.PlaceTile(i,j,tileID);
 				}
 			}
+			TSPlayer.All.SendTileRect((short)TopLeft.X, (short)TopLeft.Y,(byte)Area.Width, (byte)Area.Height);
 			
+		}
+		public List<MiniRegion> Divide(int width,int height,int amount,int gap) 
+		{
+			int x = TopLeft.X;
+			int y = TopLeft.Y;
+			if (gap*amount-1+amount*width>Area.Width||gap*amount-1+amount*height>Area.Height)return null;
+			var regions = new List<MiniRegion>();
+            for (int i = 0; i < amount; i++)
+            {
+				Rectangle area = new Rectangle(x,y,width,height);
+				regions.Add(new MiniRegion(Name+$"_{i}",ID+i+1,area));
+				x += gap + width + 1;
+            }
+			return regions;
 		}
 	}
 }
