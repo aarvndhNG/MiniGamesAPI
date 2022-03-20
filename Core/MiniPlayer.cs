@@ -185,5 +185,21 @@ namespace MiniGamesAPI.Core
             int p = Projectile.NewProjectile(new EntitySource_DebugCommand(), Player.TPlayer.position.X, Player.TPlayer.position.Y - 64f, 0f, -8f, type, 0, 0);
             TSPlayer.All.SendData(PacketTypes.ProjectileNew,"",p);
         }
+        public void Join(int roomid) 
+        {
+            CurrentRoomID = roomid;
+            BackUp = new MiniPack(Name,1);
+            BackUp.CopyFromPlayer(Player);
+        }
+        public void Leave() 
+        {
+            CurrentRoomID = 0;
+            BackUp.RestoreCharacter(Player);
+            BackUp = null;
+            SelectPackID = 0;
+            IsReady = false;
+            Status = PlayerStatus.Waiting;
+            ClearRecord();
+        }
     }
 }
