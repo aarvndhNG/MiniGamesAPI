@@ -196,10 +196,17 @@ namespace MiniGamesAPI.Core
             CurrentRoomID = 0;
             BackUp.RestoreCharacter(Player);
             BackUp = null;
+            Player.SaveServerCharacter();
             SelectPackID = 0;
             IsReady = false;
             Status = PlayerStatus.Waiting;
             ClearRecord();
+        }
+        public void SetDifficulty(byte flag) 
+        {
+            if (flag != 0 || flag != 2 || flag != 1 || flag != 4 || flag != 8) return;
+            Player.TPlayer.difficulty = flag;
+            TSPlayer.All.SendData(PacketTypes.PlayerInfo,"",Player.Index);
         }
     }
 }

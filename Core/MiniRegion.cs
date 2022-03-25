@@ -117,28 +117,28 @@ namespace MiniGamesAPI.Core
 		}
 		public void BuildFramework(int tileID) 
 		{
-            for (int i = TopLeft.X; i < BottomRight.X; i++)
+            for (int i = TopLeft.X; i <= TopRight.X; i++)
             {
-				for (int j = TopLeft.Y; j < BottomRight.Y; j++)
+				for (int j = TopLeft.Y; j <= BottomLeft.Y; j++)
 				{
-					if (i > TopLeft.X && i < TopRight.X && j > TopLeft.Y && j < BottomRight.Y) continue;
+					if (i > TopLeft.X && i < TopRight.X && j > TopLeft.Y && j < BottomLeft.Y) continue;
 					WorldGen.PlaceTile(i,j,tileID);
 				}
 			}
-			TSPlayer.All.SendTileRect((short)TopLeft.X, (short)TopLeft.Y,(byte)Area.Width, (byte)Area.Height);
+			TSPlayer.All.SendTileRect((short)TopLeft.X, (short)TopLeft.Y,(byte)(Area.Width+3), (byte)(Area.Height+3));
 			
 		}
 		public List<MiniRegion> Divide(int width,int height,int amount,int gap) 
 		{
 			int x = TopLeft.X;
 			int y = TopLeft.Y;
-			if (gap*amount-1+amount*width>Area.Width||gap*amount-1+amount*height>Area.Height)return null;
+			if (gap*amount-1+amount*width>Area.Width)return null;
 			var regions = new List<MiniRegion>();
             for (int i = 0; i < amount; i++)
             {
 				Rectangle area = new Rectangle(x,y,width,height);
 				regions.Add(new MiniRegion(Name+$"_{i}",ID+i+1,area));
-				x += gap + width + 1;
+				x += gap + width+1 ;
             }
 			return regions;
 		}
