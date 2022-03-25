@@ -204,7 +204,6 @@ namespace MiniGamesAPI.Core
         }
         public void SetDifficulty(byte flag) 
         {
-            if (flag != 0 || flag != 2 || flag != 1 || flag != 4 || flag != 8) return;
             Player.TPlayer.difficulty = flag;
             TSPlayer.All.SendData(PacketTypes.PlayerInfo,"",Player.Index);
         }

@@ -121,7 +121,35 @@ namespace MiniGamesAPI.Core
 			this.PantsColor = new Color?(new Color(4287407535U));
 			this.Items = new List<MiniItem>();
 		}
-
+		public MiniPack GetCopyNoItems(string name,int id) 
+		{
+			MiniPack copy = new MiniPack(name,id);
+			copy.Exists = this.Exists;
+			copy.ExtraSlots = this.ExtraSlots;
+			copy.EyeColor = this.EyeColor;
+			copy.Hair = this.Hair;
+			copy.HairColor = this.HairColor;
+			copy.HairDye = this.HairDye;
+			copy.HappyFunTorchTime = this.HappyFunTorchTime;
+			copy.HideVisuals = this.HideVisuals;
+			copy.HP = this.HP;
+			copy.Items = new List<MiniItem>();
+			copy.Mana = this.Mana;
+			copy.MaxHP = this.MaxHP;
+			copy.MaxMana = this.MaxMana;
+			copy.PantsColor = this.PantsColor;
+			copy.QuestsCompleted = this.QuestsCompleted;
+			copy.ShirtColor = this.ShirtColor;
+			copy.ShoeColor = this.ShoeColor;
+			copy.SkinColor = this.SkinColor;
+			copy.SkinVariant = this.SkinVariant;
+			copy.SpawnX = this.SpawnX;
+			copy.SpawnY = this.SpawnY;
+			copy.UnderShirtColor = this.UnderShirtColor;
+			copy.UnlockedBiomeTorches = this.UnlockedBiomeTorches;
+			copy.UsingBiomeTorches = this.UsingBiomeTorches;
+			return copy;
+		}
 		
 		public void RestoreCharacter(TSPlayer player)
 		{
