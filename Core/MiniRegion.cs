@@ -68,7 +68,7 @@ namespace MiniGamesAPI.Core
 		{
 			get
 			{
-				return new Point((this.Area.Width + this.Area.X) / 2, (this.Area.Y + this.Area.Height) / 2);
+				return new Point((this.Area.Width / 2 + this.Area.X) , (this.Area.Y + this.Area.Height/ 2) );
 			}
 		}
 
@@ -115,7 +115,7 @@ namespace MiniGamesAPI.Core
 		{
 			return Area.Contains(x, y);
 		}
-		public void BuildFramework(int tileID) 
+		public void BuildFramework(int tileID,bool send=false) 
 		{
             for (int i = TopLeft.X; i <= TopRight.X; i++)
             {
@@ -125,8 +125,8 @@ namespace MiniGamesAPI.Core
 					WorldGen.PlaceTile(i,j,tileID);
 				}
 			}
-			TSPlayer.All.SendTileRect((short)TopLeft.X, (short)TopLeft.Y,(byte)(Area.Width+3), (byte)(Area.Height+3));
-			
+            if (send) NetMessage.SendTileSquare(-1, TopLeft.X, TopLeft.Y, Area.Width + 3, Area.Height + 3);
+
 		}
 		public List<MiniRegion> Divide(int width,int height,int amount,int gap) 
 		{

@@ -53,6 +53,7 @@ namespace MiniGamesAPI.Core
 		{
 			foreach (MiniTile miniTile in this.Tiles)
 			{
+				miniTile.Kill();
 				miniTile.Place();
 			}
 			TSPlayer.All.SendTileRect((short)Region.TopLeft.X, (short)Region.TopLeft.Y, (byte)(Region.TopRight.X + 1 - Region.TopLeft.X) , (byte)(Region.BottomLeft.Y + 1 - Region.TopLeft.Y));
