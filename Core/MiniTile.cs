@@ -32,8 +32,8 @@ namespace MiniGamesAPI.Core
 			}*/
 			Terraria.Main.tile[X, Y] = new Tile(Tile);
 		}
-		public void Kill() {
-			WorldGen.KillTile(X, Y);
+		public void Kill(bool fail=false,bool effectOnly = false,bool noitem=false) {
+			WorldGen.KillTile(X, Y,fail,effectOnly,noitem);
 		}
 		public void Update() 
 		{
