@@ -200,6 +200,7 @@ namespace MiniGamesAPI.Core
             SelectPackID = 0;
             IsReady = false;
             Status = PlayerStatus.Waiting;
+            SendBoardMsg("");
             ClearRecord();
         }
         public void SetDifficulty(byte flag) 

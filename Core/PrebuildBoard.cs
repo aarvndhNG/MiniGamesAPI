@@ -49,11 +49,11 @@ namespace MiniGamesAPI.Core
 
 		}
 		
-		public void ReBuild()
+		public void ReBuild(bool noItem=false)
 		{
 			foreach (MiniTile miniTile in this.Tiles)
 			{
-				miniTile.Kill();
+				miniTile.Kill(noItem);
 				miniTile.Place();
 			}
 			TSPlayer.All.SendTileRect((short)Region.TopLeft.X, (short)Region.TopLeft.Y, (byte)(Region.TopRight.X + 1 - Region.TopLeft.X) , (byte)(Region.BottomLeft.Y + 1 - Region.TopLeft.Y));

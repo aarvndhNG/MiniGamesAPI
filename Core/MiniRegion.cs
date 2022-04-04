@@ -12,22 +12,11 @@ namespace MiniGamesAPI.Core
 {
 	public class MiniRegion
 	{
-
 		public string Name { get; set; }
-
-
 		public int ID { get; set; }
-
-
 		public List<string> AllowGroups { get; set; }
-
-
 		public List<string> AllowUsers { get; set; }
-
-
 		public List<string> Owners { get; set; }
-
-
 		public Point TopLeft
 		{
 			get
@@ -35,35 +24,27 @@ namespace MiniGamesAPI.Core
 				return new Point(this.Area.X, this.Area.Y);
 			}
 		}
-
-
 		public Point TopRight
 		{
 			get
 			{
-				return new Point(this.Area.X + this.Area.Width , this.Area.Y);
+				return new Point(this.Area.X + this.Area.Width+1 , this.Area.Y);
 			}
 		}
-
-
 		public Point BottomLeft
 		{
 			get
 			{
-				return new Point(this.Area.X, this.Area.Y + this.Area.Height);
+				return new Point(this.Area.X, this.Area.Y + this.Area.Height+1);
 			}
 		}
-
-
 		public Point BottomRight
 		{
 			get
 			{
-				return new Point(this.Area.X + this.Area.Width, this.Area.Y + this.Area.Height);
+				return new Point(this.Area.X + this.Area.Width+1, this.Area.Y + this.Area.Height+1);
 			}
 		}
-
-
 		public Point Center
 		{
 			get
@@ -71,14 +52,8 @@ namespace MiniGamesAPI.Core
 				return new Point((this.Area.Width / 2 + this.Area.X) , (this.Area.Y + this.Area.Height/ 2) );
 			}
 		}
-
-
 		public Rectangle Area { get; set; }
-
-
 		public bool IsLocked { get; set; }
-
-
 		public MiniRegion(string name, int id, Rectangle area)
 		{
 			this.ID = id;
@@ -89,8 +64,6 @@ namespace MiniGamesAPI.Core
 			this.AllowUsers = new List<string>();
 			this.Owners = new List<string>();
 		}
-
-
 		public void ShowFramework()
 		{
 			Vector2 width = new Vector2((float)((this.TopRight.X+1) * 16 - this.TopLeft.X * 16), (float)(this.TopRight.Y + 1) * 16 - this.TopLeft.Y * 16);
@@ -138,7 +111,7 @@ namespace MiniGamesAPI.Core
             {
 				Rectangle area = new Rectangle(x,y,width,height);
 				regions.Add(new MiniRegion(Name+$"_{i}",ID+i+1,area));
-				x += gap + width+1 ;
+				x += gap + width+2 ;
             }
 			return regions;
 		}
