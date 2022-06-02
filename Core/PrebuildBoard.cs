@@ -56,16 +56,7 @@ namespace MiniGamesAPI.Core
 				miniTile.Kill(noItem);
 				miniTile.Place();
 			}
-			//TSPlayer.All.SendTileRect((short)Region.TopLeft.X, (short)Region.TopLeft.Y, (byte)(Region.TopRight.X + 1 - Region.TopLeft.X) , (byte)(Region.BottomLeft.Y + 1 - Region.TopLeft.Y));
-			var sectionX = Netplay.GetSectionX(Region.TopLeft.X);
-			var sectionY = Netplay.GetSectionY(Region.TopLeft.Y);
-            for (int i = 0; i < Terraria.Main.player.Length; i++)
-            {
-				var plr = Terraria.Main.player[i];
-				if (plr == null) continue;
-				NetMessage.SendSection(plr.whoAmI, sectionX, sectionY);
-			}
-			
+			TSPlayer.All.SendTileRect((short)Region.TopLeft.X, (short)Region.TopLeft.Y,(byte)Region.Area.Width  , (byte)Region.Area.Height );
 		}
 		public string ShowInfo() 
 		{
