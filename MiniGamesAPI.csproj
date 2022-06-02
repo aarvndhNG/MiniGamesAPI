@@ -57,7 +57,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\MiniCircle.cs" />
     <Compile Include="Enum.cs" />
+    <Compile Include="Hooks\GameSecondArgs.cs" />
+    <Compile Include="Hooks\HookManager.cs" />
+    <Compile Include="Hooks\JoinRoomArgs.cs" />
+    <Compile Include="Hooks\LeaveRoomArgs.cs" />
+    <Compile Include="Hooks\RoomPostConcludedArgs.cs" />
+    <Compile Include="Hooks\RoomPreConcludeArgs.cs" />
     <Compile Include="IRoom.cs" />
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Core\MiniItem.cs" />

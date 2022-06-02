@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MiniGamesAPI.Hooks;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,16 +18,21 @@ namespace MiniGamesAPI.Core
     {
         [JsonIgnore]
         public TSPlayer Player { get; set; }
+        [JsonIgnore]
+        public MiniCircle Circle {get;set;}
         public int Kills { get; set; }
         public int Deaths { get; set; }
         public int Assistances { get; set; }
         public int ID { get; set; }
         public string Name { get; set; }
         public bool IsReady { get; set; }
+        public bool Visiable { get; set; }
         public int CurrentRoomID { get; set; }
         public int SelectPackID { get; set; }
+        [JsonIgnore]
         public MiniPack BackUp { get; set; }
         public PlayerStatus Status { get; set; }
+        [JsonIgnore]
         public Vector2 Position { get { return Player.TPlayer.position; } }
         public void Ready()
         {
@@ -34,6 +40,8 @@ namespace MiniGamesAPI.Core
         }
         public MiniPlayer(int id, TSPlayer player)
         {
+            ID = id;
+            Name = player.Name;
             Player = player;
             BackUp = null;
             IsReady = false;
@@ -43,11 +51,25 @@ namespace MiniGamesAPI.Core
             Assistances = 0;
             CurrentRoomID = 0;
             SelectPackID = 0;
+            
         }
         public MiniPlayer()
         {
-
+            Kills = 0;
+            Deaths = 0;
+            Assistances = 0;
+            CurrentRoomID = 0;
+            SelectPackID = 0;
+            Status = PlayerStatus.Waiting;
+            IsReady = false;
+            Hooks.HookManager.GameSecond += OnGameSecond;
         }
+
+        private void OnGameSecond(GameSecondArgs args)
+        {
+            
+        }
+
         public override string ToString()
         {
             StringBuilder playerInfo = new StringBuilder();

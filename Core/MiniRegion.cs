@@ -28,28 +28,28 @@ namespace MiniGamesAPI.Core
 		{
 			get
 			{
-				return new Point(this.Area.X + this.Area.Width+1 , this.Area.Y);
+				return new Point(this.Area.X + this.Area.Width-1 , this.Area.Y);
 			}
 		}
 		public Point BottomLeft
 		{
 			get
 			{
-				return new Point(this.Area.X, this.Area.Y + this.Area.Height+1);
+				return new Point(this.Area.X, this.Area.Y + this.Area.Height-1);
 			}
 		}
 		public Point BottomRight
 		{
 			get
 			{
-				return new Point(this.Area.X + this.Area.Width+1, this.Area.Y + this.Area.Height+1);
+				return new Point(this.Area.X + this.Area.Width-1, this.Area.Y + this.Area.Height-1);
 			}
 		}
 		public Point Center
 		{
 			get
 			{
-				return new Point((this.Area.Width / 2 + this.Area.X) , (this.Area.Y + this.Area.Height/ 2) );
+				return new Point((this.Area.Width / 2-1 + this.Area.X) , (this.Area.Y + this.Area.Height/ 2-1) );
 			}
 		}
 		public Rectangle Area { get; set; }
@@ -66,19 +66,23 @@ namespace MiniGamesAPI.Core
 		}
 		public void ShowFramework()
 		{
-			Vector2 width = new Vector2((float)((this.TopRight.X+1) * 16 - this.TopLeft.X * 16), (float)(this.TopRight.Y + 1) * 16 - this.TopLeft.Y * 16);
-			Vector2 height = new Vector2(0f, (float)((this.BottomLeft.Y+1) * 16 - this.TopLeft.Y * 16));
-			Vector2 center = new Vector2((float)(this.Area.Center.X * 16), (float)(this.Area.Center.Y * 16));
-			int proj_ = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2((float)(this.TopLeft.X * 16), (float)(this.TopLeft.Y * 16)), width * 0.01f, 132, 0, 0f, 255, 0f, 0f);
-			int proj_2 = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2((float)(this.TopLeft.X * 16), (float)(this.TopLeft.Y * 16)), height * 0.01f, 132, 0, 0f, 255, 0f, 0f);
-			int proj_3 = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2((float)(this.BottomLeft.X * 16), (float)(this.BottomLeft.Y * 16)), width * 0.01f, 132, 0, 0f, 255, 0f, 0f);
-			int proj_4 = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2((float)(this.TopRight.X * 16), (float)(this.TopRight.Y * 16)), height * 0.01f, 132, 0, 0f, 255, 0f, 0f);
+			Vector2 width = new Vector2((TopRight.X+1  - TopLeft.X )* 16f, 0f);
+			Vector2 height = new Vector2(0f,(BottomLeft.Y+1  - TopLeft.Y)*16f);
+			Vector2 center = new Vector2(Area.Center.X * 16f, Area.Center.Y * 16f);
+			int proj_ = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2(TopLeft.X * 16f, TopLeft.Y * 16f), width * 0.01f, 132, 0, 0f, 255, 0f, 0f);
+			int proj_2 = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2(TopLeft.X * 16f, TopLeft.Y * 16f), height * 0.01f, 132, 0, 0f, 255, 0f, 0f);
+			int proj_3 = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2(BottomLeft.X * 16f, BottomLeft.Y * 16f), width * 0.01f, 132, 0, 0f, 255, 0f, 0f);
+			int proj_4 = Projectile.NewProjectile(new EntitySource_DebugCommand(), new Vector2(TopRight.X * 16f, TopRight.Y * 16f), height * 0.01f, 132, 0, 0f, 255, 0f, 0f);
 			int proj_5 = Projectile.NewProjectile(new EntitySource_DebugCommand(), center, Vector2.Zero, 254, 0, 0f, 255, 0f, 0f);
 			TSPlayer.All.SendData(PacketTypes.ProjectileNew, "", proj_, 0f, 0f, 0f, 0);
 			TSPlayer.All.SendData(PacketTypes.ProjectileNew, "", proj_2, 0f, 0f, 0f, 0);
 			TSPlayer.All.SendData(PacketTypes.ProjectileNew, "", proj_3, 0f, 0f, 0f, 0);
 			TSPlayer.All.SendData(PacketTypes.ProjectileNew, "", proj_4, 0f, 0f, 0f, 0);
 			TSPlayer.All.SendData(PacketTypes.ProjectileNew, "", proj_5, 0f, 0f, 0f, 0);
+		}
+		public string ShowCoordination() 
+		{
+			return $"左上角({TopLeft.X},{TopLeft.Y})\n  左下角({BottomLeft.X},{BottomLeft.Y})\n  右上角({TopRight.X},{TopRight.Y})\n  右下角({BottomRight.X},{BottomRight.Y})\n";
 		}
 		public bool Contain(Point point)
 		{
@@ -98,7 +102,7 @@ namespace MiniGamesAPI.Core
 					WorldGen.PlaceTile(i,j,tileID);
 				}
 			}
-            if (send) NetMessage.SendTileSquare(-1, TopLeft.X, TopLeft.Y, Area.Width + 3, Area.Height + 3);
+            if (send) TSPlayer.All.SendTileRect((short)TopLeft.X, (short)TopLeft.Y, (byte)(Area.Width + 3), (byte)(Area.Height + 3));
 
 		}
 		public List<MiniRegion> Divide(int width,int height,int amount,int gap) 
@@ -111,7 +115,7 @@ namespace MiniGamesAPI.Core
             {
 				Rectangle area = new Rectangle(x,y,width,height);
 				regions.Add(new MiniRegion(Name+$"_{i}",ID+i+1,area));
-				x += gap + width+2 ;
+				x += gap + width+1 ;
             }
 			return regions;
 		}

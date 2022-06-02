@@ -42,6 +42,9 @@ namespace MiniGamesAPI.Core
 		
 		public void StoreSlot(int netid, int stack, byte prefix, int slot, bool sendData = false)
 		{
+
+
+
 		}
 
 		
