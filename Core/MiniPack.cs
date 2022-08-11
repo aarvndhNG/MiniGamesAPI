@@ -153,166 +153,9 @@ namespace MiniGamesAPI.Core
 		
 		public void RestoreCharacter(TSPlayer player)
 		{
-			player.IgnoreSSCPackets = true;
-			player.TPlayer.statLife = this.HP;
-			player.TPlayer.statLifeMax = this.MaxHP;
-			player.TPlayer.statMana = this.Mana;
-			player.TPlayer.statManaMax = this.MaxMana;
-			player.TPlayer.SpawnX = this.SpawnX;
-			player.TPlayer.SpawnY = this.SpawnY;
-			player.sX = this.SpawnX;
-			player.sY = this.SpawnY;
-			player.TPlayer.hairDye = this.HairDye;
-			player.TPlayer.anglerQuestsFinished = this.QuestsCompleted;
-			if (this.ExtraSlots != null)
-			{
-				player.TPlayer.extraAccessory = (this.ExtraSlots.Value == 1);
-			}
-			if (this.SkinVariant != null)
-			{
-				player.TPlayer.skinVariant = this.SkinVariant.Value;
-			}
-			if (this.Hair != null)
-			{
-				player.TPlayer.hair = this.Hair.Value;
-			}
-			if (this.HairColor != null)
-			{
-				player.TPlayer.hairColor = this.HairColor.Value;
-			}
-			if (this.PantsColor != null)
-			{
-				player.TPlayer.pantsColor = this.PantsColor.Value;
-			}
-			if (this.ShirtColor != null)
-			{
-				player.TPlayer.shirtColor = this.ShirtColor.Value;
-			}
-			if (this.UnderShirtColor != null)
-			{
-				player.TPlayer.underShirtColor = this.UnderShirtColor.Value;
-			}
-			if (this.ShoeColor != null)
-			{
-				player.TPlayer.shoeColor = this.ShoeColor.Value;
-			}
-			if (this.SkinColor != null)
-			{
-				player.TPlayer.skinColor = this.SkinColor.Value;
-			}
-			if (this.EyeColor != null)
-			{
-				player.TPlayer.eyeColor = this.EyeColor.Value;
-			}
-			if (this.HideVisuals != null)
-			{
-				player.TPlayer.hideVisibleAccessory = this.HideVisuals;
-			}
-			else
-			{
-				player.TPlayer.hideVisibleAccessory = new bool[player.TPlayer.hideVisibleAccessory.Length];
-			}
-			for (int i = 0; i < NetItem.MaxInventory; i++)
-			{
-				if (i < 59)
-				{
-					player.TPlayer.inventory[i].netDefaults(0);
-				}
-				else if (i < 79)
-				{
-					int index = i - NetItem.ArmorIndex.Item1;
-					player.TPlayer.armor[index].netDefaults(0);
-				}
-				else if (i < 89)
-				{
-					int index2 = i - NetItem.DyeIndex.Item1;
-					player.TPlayer.dye[index2].netDefaults(0);
-				}
-				else if (i < 94)
-				{
-					int index3 = i - NetItem.MiscEquipIndex.Item1;
-					player.TPlayer.miscEquips[index3].netDefaults(0);
-				}
-				else if (i < 99)
-				{
-					int index4 = i - NetItem.MiscDyeIndex.Item1;
-					player.TPlayer.miscDyes[index4].netDefaults(0);
-				}
-				else if (i < 139)
-				{
-					int index5 = i - NetItem.PiggyIndex.Item1;
-					player.TPlayer.bank.item[index5].netDefaults(0);
-				}
-				else if (i < 179)
-				{
-					int index6 = i - NetItem.SafeIndex.Item1;
-					player.TPlayer.bank2.item[index6].netDefaults(0);
-				}
-				else if (i < 220)
-				{
-					if (i == 179)
-					{
-						player.TPlayer.trashItem.netDefaults(0);
-					}
-					else
-					{
-						int index7 = i - NetItem.ForgeIndex.Item1;
-						player.TPlayer.bank3.item[index7].netDefaults(0);
-					}
-				}
-				else
-				{
-					int index8 = i - NetItem.VoidIndex.Item1;
-					player.TPlayer.bank4.item[index8].netDefaults(0);
-				}
-			}
-			for (int j = 0; j < this.Items.Count; j++)
-			{
-				MiniItem item = this.Items[j];
-				Item trItem = TShock.Utils.GetItemById(item.NetID);
-				trItem.stack = item.Stack;
-				trItem.prefix = item.Prefix;
-				if (item.Slot >= 0 && item.Slot <= 58)
-				{
-					player.TPlayer.inventory[item.Slot] = trItem;
-				}
-				else if (item.Slot >= 59 && item.Slot <= 78)
-				{
-					player.TPlayer.armor[item.Slot - 59] = trItem;
-				}
-				else if (item.Slot >= 79 && item.Slot <= 88)
-				{
-					player.TPlayer.dye[item.Slot - 79] = trItem;
-				}
-				else if (item.Slot >= 89 && item.Slot <= 93)
-				{
-					player.TPlayer.miscEquips[item.Slot - 89] = trItem;
-				}
-				else if (item.Slot >= 94 && item.Slot <= 98)
-				{
-					player.TPlayer.miscDyes[item.Slot - 94] = trItem;
-				}
-				else if (item.Slot >= 99 && item.Slot <= 138)
-				{
-					player.TPlayer.bank.item[item.Slot - 99] = trItem;
-				}
-				else if (item.Slot >= 139 && item.Slot <= 178)
-				{
-					player.TPlayer.bank2.item[item.Slot - 139] = trItem;
-				}
-				else if (item.Slot >= 180 && item.Slot <= 219)
-				{
-					player.TPlayer.bank3.item[item.Slot - 180] = trItem;
-				}
-				else if (item.Slot >= 220 && item.Slot <= 259)
-				{
-					player.TPlayer.bank4.item[item.Slot - 220] = trItem;
-				}
-				else
-				{
-					player.TPlayer.trashItem = trItem;
-				}
-			}
+			ApplyInfoToPlr(player);
+			NetDefaultsZeroAllInv(player);
+			ApplyItemToPlrAll(player);
 			float slot = 0f;
 			for (int k = 0; k < NetItem.InventorySlots; k++)
 			{
@@ -428,7 +271,314 @@ namespace MiniGamesAPI.Core
 			NetMessage.SendData(39, player.Index, -1, NetworkText.Empty, 400, 0f, 0f, 0f, 0, 0, 0);
 		}
 
+
+		public void ApplyItemToPlrExceptExtra(TSPlayer player)
+		{
+			for (int j = 0; j < this.Items.Count; j++)
+			{
+				MiniItem item = this.Items[j];
+				Item trItem = TShock.Utils.GetItemById(item.NetID);
+				trItem.stack = item.Stack;
+				trItem.prefix = item.Prefix;
+				if (item.Slot >= 0 && item.Slot <= 58)
+				{
+					player.TPlayer.inventory[item.Slot] = trItem;
+				}
+				else if (item.Slot >= 59 && item.Slot <= 78)
+				{
+					player.TPlayer.armor[item.Slot - 59] = trItem;
+				}
+				else if (item.Slot >= 79 && item.Slot <= 88)
+				{
+					player.TPlayer.dye[item.Slot - 79] = trItem;
+				}
+				else if (item.Slot >= 89 && item.Slot <= 93)
+				{
+					player.TPlayer.miscEquips[item.Slot - 89] = trItem;
+				}
+				else if (item.Slot >= 94 && item.Slot <= 98)
+				{
+					player.TPlayer.miscDyes[item.Slot - 94] = trItem;
+				}
+				else
+				{
+					player.TPlayer.trashItem = trItem;
+				}
+			}
+		}
+		public void ApplyItemToPlrAll(TSPlayer player) 
+		{
+			for (int j = 0; j < this.Items.Count; j++)
+			{
+				MiniItem item = this.Items[j];
+				Item trItem = TShock.Utils.GetItemById(item.NetID);
+				trItem.stack = item.Stack;
+				trItem.prefix = item.Prefix;
+				if (item.Slot >= 0 && item.Slot <= 58)
+				{
+					player.TPlayer.inventory[item.Slot] = trItem;
+				}
+				else if (item.Slot >= 59 && item.Slot <= 78)
+				{
+					player.TPlayer.armor[item.Slot - 59] = trItem;
+				}
+				else if (item.Slot >= 79 && item.Slot <= 88)
+				{
+					player.TPlayer.dye[item.Slot - 79] = trItem;
+				}
+				else if (item.Slot >= 89 && item.Slot <= 93)
+				{
+					player.TPlayer.miscEquips[item.Slot - 89] = trItem;
+				}
+				else if (item.Slot >= 94 && item.Slot <= 98)
+				{
+					player.TPlayer.miscDyes[item.Slot - 94] = trItem;
+				}
+				else if (item.Slot >= 99 && item.Slot <= 138)
+				{
+					player.TPlayer.bank.item[item.Slot - 99] = trItem;
+				}
+				else if (item.Slot >= 139 && item.Slot <= 178)
+				{
+					player.TPlayer.bank2.item[item.Slot - 139] = trItem;
+				}
+				else if (item.Slot >= 180 && item.Slot <= 219)
+				{
+					player.TPlayer.bank3.item[item.Slot - 180] = trItem;
+				}
+				else if (item.Slot >= 220 && item.Slot <= 259)
+				{
+					player.TPlayer.bank4.item[item.Slot - 220] = trItem;
+				}
+				else
+				{
+					player.TPlayer.trashItem = trItem;
+				}
+			}
+
+
+		}
+
+		public void OnlySendInvData(TSPlayer player) 
+		{
+            for (int i = 0; i < NetItem.InventorySlots; i++)
+            {
+                player.SendData(PacketTypes.PlayerSlot, player.TPlayer.inventory[i].Name, player.Index, i, player.TPlayer.inventory[i].prefix);
+                //NetMessage.SendData((int)PacketTypes.PlayerSlot, -1, -1, NetworkText.FromLiteral(player.TPlayer.inventory[i].Name),player.Index,i, player.TPlayer.inventory[i].prefix);
+            }
+			for (int i = 0; i < NetItem.ArmorSlots; i++)
+			{
+				player.SendData(PacketTypes.PlayerSlot, player.TPlayer.armor[i].Name, player.Index, i+59, player.TPlayer.armor[i].prefix);
+				//NetMessage.SendData((int)PacketTypes.PlayerSlot, -1, -1, NetworkText.FromLiteral(player.TPlayer.armor[i].Name), player.Index, i+59, player.TPlayer.armor[i].prefix);
+			}
+			for (int i = 0; i < NetItem.DyeSlots; i++)
+			{
+				player.SendData(PacketTypes.PlayerSlot, player.TPlayer.dye[i].Name, player.Index, i+79, player.TPlayer.dye[i].prefix);
+				//NetMessage.SendData((int)PacketTypes.PlayerSlot, -1, -1, NetworkText.FromLiteral(player.TPlayer.dye[i].Name), player.Index, i+79, player.TPlayer.dye[i].prefix);
+			}
+			for (int i = 0; i < NetItem.MiscDyeSlots; i++)
+			{
+				player.SendData(PacketTypes.PlayerSlot, player.TPlayer.miscDyes[i].Name, player.Index, i+94, player.TPlayer.miscDyes[i].prefix);
+				//NetMessage.SendData((int)PacketTypes.PlayerSlot, -1, -1, NetworkText.FromLiteral(player.TPlayer.miscDyes[i].Name), player.Index, i+94, player.TPlayer.miscDyes[i].prefix);
+			}
+			for (int i = 0; i < NetItem.MiscEquipSlots; i++)
+			{
+				player.SendData(PacketTypes.PlayerSlot, player.TPlayer.miscEquips[i].Name, player.Index, i+89, player.TPlayer.miscEquips[i].prefix);
+				//NetMessage.SendData((int)PacketTypes.PlayerSlot, -1, -1, NetworkText.FromLiteral(player.TPlayer.miscEquips[i].Name), player.Index, i+89, player.TPlayer.miscEquips[i].prefix);
+			}
+			player.SendData(PacketTypes.PlayerSlot, player.TPlayer.trashItem.Name, player.Index, 179, player.TPlayer.trashItem.prefix);
+		}
+
+		public void UpdatePlayerInv(TSPlayer player) 
+		{
+			NetDefaultsZeroExceptExtra(player);
+			ApplyItemToPlrExceptExtra(player);
+			OnlySendInvData(player);
+		}
+
+		public void UpdatePlayerInfo(TSPlayer player)
+		{
+			ApplyInfoToPlr(player);
+			SendPlayerInfo(player);
 		
+		}
+
+		public void SendPlayerInfo(TSPlayer player) 
+		{
+			NetMessage.SendData(4, -1, -1, NetworkText.FromLiteral(player.Name), player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(42, -1, -1, NetworkText.Empty, player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(16, -1, -1, NetworkText.Empty, player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(4, player.Index, -1, NetworkText.FromLiteral(player.Name), player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(42, player.Index, -1, NetworkText.Empty, player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(16, player.Index, -1, NetworkText.Empty, player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(50, -1, -1, NetworkText.Empty, player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(50, player.Index, -1, NetworkText.Empty, player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(76, player.Index, -1, NetworkText.Empty, player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(76, -1, -1, NetworkText.Empty, player.Index, 0f, 0f, 0f, 0, 0, 0);
+			NetMessage.SendData(39, player.Index, -1, NetworkText.Empty, 400, 0f, 0f, 0f, 0, 0, 0);
+		}
+
+
+		public void ApplyInfoToPlr(TSPlayer player) 
+		{
+			player.IgnoreSSCPackets = true;
+			player.TPlayer.statLife = this.HP;
+			player.TPlayer.statLifeMax = this.MaxHP;
+			player.TPlayer.statMana = this.Mana;
+			player.TPlayer.statManaMax = this.MaxMana;
+			player.TPlayer.SpawnX = this.SpawnX;
+			player.TPlayer.SpawnY = this.SpawnY;
+			player.sX = this.SpawnX;
+			player.sY = this.SpawnY;
+			player.TPlayer.hairDye = this.HairDye;
+			player.TPlayer.anglerQuestsFinished = this.QuestsCompleted;
+			if (this.ExtraSlots != null)
+			{
+				player.TPlayer.extraAccessory = (this.ExtraSlots.Value == 1);
+			}
+			if (this.SkinVariant != null)
+			{
+				player.TPlayer.skinVariant = this.SkinVariant.Value;
+			}
+			if (this.Hair != null)
+			{
+				player.TPlayer.hair = this.Hair.Value;
+			}
+			if (this.HairColor != null)
+			{
+				player.TPlayer.hairColor = this.HairColor.Value;
+			}
+			if (this.PantsColor != null)
+			{
+				player.TPlayer.pantsColor = this.PantsColor.Value;
+			}
+			if (this.ShirtColor != null)
+			{
+				player.TPlayer.shirtColor = this.ShirtColor.Value;
+			}
+			if (this.UnderShirtColor != null)
+			{
+				player.TPlayer.underShirtColor = this.UnderShirtColor.Value;
+			}
+			if (this.ShoeColor != null)
+			{
+				player.TPlayer.shoeColor = this.ShoeColor.Value;
+			}
+			if (this.SkinColor != null)
+			{
+				player.TPlayer.skinColor = this.SkinColor.Value;
+			}
+			if (this.EyeColor != null)
+			{
+				player.TPlayer.eyeColor = this.EyeColor.Value;
+			}
+			if (this.HideVisuals != null)
+			{
+				player.TPlayer.hideVisibleAccessory = this.HideVisuals;
+			}
+			else
+			{
+				player.TPlayer.hideVisibleAccessory = new bool[player.TPlayer.hideVisibleAccessory.Length];
+			}
+		}
+
+
+
+		public void NetDefaultsZeroAllInv(TSPlayer player)
+		{
+			for (int i = 0; i < NetItem.MaxInventory; i++)
+			{
+				if (i < 59)
+				{
+					player.TPlayer.inventory[i].netDefaults(0);
+				}
+				else if (i < 79)
+				{
+					int index = i - NetItem.ArmorIndex.Item1;
+					player.TPlayer.armor[index].netDefaults(0);
+				}
+				else if (i < 89)
+				{
+					int index2 = i - NetItem.DyeIndex.Item1;
+					player.TPlayer.dye[index2].netDefaults(0);
+				}
+				else if (i < 94)
+				{
+					int index3 = i - NetItem.MiscEquipIndex.Item1;
+					player.TPlayer.miscEquips[index3].netDefaults(0);
+				}
+				else if (i < 99)
+				{
+					int index4 = i - NetItem.MiscDyeIndex.Item1;
+					player.TPlayer.miscDyes[index4].netDefaults(0);
+				}
+				else if (i < 139)
+				{
+					int index5 = i - NetItem.PiggyIndex.Item1;
+					player.TPlayer.bank.item[index5].netDefaults(0);
+				}
+				else if (i < 179)
+				{
+					int index6 = i - NetItem.SafeIndex.Item1;
+					player.TPlayer.bank2.item[index6].netDefaults(0);
+				}
+				else if (i < 220)
+				{
+					if (i == 179)
+					{
+						player.TPlayer.trashItem.netDefaults(0);
+					}
+					else
+					{
+						int index7 = i - NetItem.ForgeIndex.Item1;
+						player.TPlayer.bank3.item[index7].netDefaults(0);
+					}
+				}
+				else
+				{
+					int index8 = i - NetItem.VoidIndex.Item1;
+					player.TPlayer.bank4.item[index8].netDefaults(0);
+				}
+			}
+
+
+		}
+		public void NetDefaultsZeroExceptExtra(TSPlayer player) 
+		{
+			for (int i = 0; i < NetItem.MaxInventory; i++)
+			{
+				if (i < 59)
+				{
+					player.TPlayer.inventory[i].netDefaults(0);
+				}
+				else if (i < 79)
+				{
+					int index = i - NetItem.ArmorIndex.Item1;
+					player.TPlayer.armor[index].netDefaults(0);
+				}
+				else if (i < 89)
+				{
+					int index2 = i - NetItem.DyeIndex.Item1;
+					player.TPlayer.dye[index2].netDefaults(0);
+				}
+				else if (i < 94)
+				{
+					int index3 = i - NetItem.MiscEquipIndex.Item1;
+					player.TPlayer.miscEquips[index3].netDefaults(0);
+				}
+				else if (i < 99)
+				{
+					int index4 = i - NetItem.MiscDyeIndex.Item1;
+					player.TPlayer.miscDyes[index4].netDefaults(0);
+				}
+				else if (i == 179)
+				{
+					player.TPlayer.trashItem.netDefaults(0);
+				}
+			}
+		}
+
+
 		public void CopyFromPlayer(TSPlayer plr)
 		{
 			if (plr == null)
@@ -602,12 +752,6 @@ namespace MiniGamesAPI.Core
 				}
 			}
 			return items;
-		}
-
-		
-		public void SaveDBWhenLeave(TSPlayer plr)
-		{
-			TShock.CharacterDB.InsertSpecificPlayerData(plr, this.TransToPlayerData());
 		}
 	}
 }

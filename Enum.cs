@@ -21,5 +21,14 @@ namespace MiniGamesAPI
         Selecting,
         Gaming    
         }
+        public enum TeamID
+        {
+            White=0,
+            Red,
+            Green,
+            Blue,
+            Yellow,
+            Pink
+        }
     }
 }
